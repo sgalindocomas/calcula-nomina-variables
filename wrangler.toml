@@ -1,5 +1,0 @@
-name = "calcula-finiquito-falck"
-compatibility_date = "2026-07-08"
-
-[assets]
-directory = "./"
