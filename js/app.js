@@ -528,9 +528,12 @@ function calculateResults() {
     const f_sunday = totals.sunday_hours * p_domingo;
     const f_diets = totals.diets * p_dieta;
     
-    const totalFin = f_comp + f_prolong + f_night + f_sunday + f_diets;
+    const subTotalVariables = f_comp + f_prolong + f_night + f_sunday + f_diets;
+    const aCuentaConvenio = subTotalVariables * 0.0404;
+    const totalFin = subTotalVariables + aCuentaConvenio;
     
     const eur = new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' });
+    const fmt = num => Number.isInteger(num) ? num : parseFloat(num.toFixed(2));
     
     let html = `
         <div class="results-card">
@@ -540,7 +543,7 @@ function calculateResults() {
     if (totals.comp_hours > 0) {
         html += `
             <div class="result-row">
-                <span>Horas Complementarias (${totals.comp_hours} h)</span>
+                <span>Horas Complementarias (${fmt(totals.comp_hours)} h)</span>
                 <strong>${eur.format(f_comp)}</strong>
             </div>`;
     }
@@ -548,7 +551,7 @@ function calculateResults() {
     if (totals.prolongation_mins > 0) {
         html += `
             <div class="result-row">
-                <span>Prolongación (${totals.prolongation_mins} min)</span>
+                <span>Prolongación (${fmt(totals.prolongation_mins)} min)</span>
                 <strong>${eur.format(f_prolong)}</strong>
             </div>`;
     }
@@ -556,7 +559,7 @@ function calculateResults() {
     if (totals.night_hours > 0) {
         html += `
             <div class="result-row">
-                <span>Nocturnidad (${totals.night_hours.toFixed(2)} h)</span>
+                <span>Nocturnidad (${fmt(totals.night_hours)} h)</span>
                 <strong>${eur.format(f_night)}</strong>
             </div>`;
     }
@@ -564,7 +567,7 @@ function calculateResults() {
     if (totals.sunday_hours > 0) {
         html += `
             <div class="result-row">
-                <span>Domingos (${totals.sunday_hours.toFixed(2)} h)</span>
+                <span>Domingos (${fmt(totals.sunday_hours)} h)</span>
                 <strong>${eur.format(f_sunday)}</strong>
             </div>`;
     }
@@ -572,8 +575,16 @@ function calculateResults() {
     if (totals.diets > 0) {
         html += `
             <div class="result-row">
-                <span>Dietas (${totals.diets} uds)</span>
+                <span>Dietas (${fmt(totals.diets)} uds)</span>
                 <strong>${eur.format(f_diets)}</strong>
+            </div>`;
+    }
+    
+    if (aCuentaConvenio > 0) {
+        html += `
+            <div class="result-row" style="color: var(--color-primary); font-weight: 600;">
+                <span>A cuenta convenio (4.04%)</span>
+                <strong>${eur.format(aCuentaConvenio)}</strong>
             </div>`;
     }
             
