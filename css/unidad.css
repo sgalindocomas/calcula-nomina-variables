@@ -1,0 +1,12 @@
+.calendar-day .shift-unidad {
+    font-size: 0.55rem;
+    font-weight: 800;
+    margin-top: 2px;
+    color: var(--color-primary);
+    text-align: center;
+    line-height: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 90%;
+}
