@@ -2,14 +2,20 @@
     /* Color Palette */
     --color-primary: #e63946;
     --color-primary-hover: #d62828;
-    --color-primary-light: #ffccd5;
+    --color-primary-light: hsl(353, 76%, 95%);
+    --color-secondary: hsl(210, 100%, 55%);
+    --color-secondary-light: hsl(210, 100%, 95%);
     --color-bg: #f8f9fa;
     --color-surface: #ffffff;
     --color-text: #2b2d42;
     --color-text-muted: #6c757d;
     --color-border: #e9ecef;
-    --color-success: #2a9d8f;
+    --color-success: hsl(142, 71%, 45%);
     --color-warning: #e9c46a;
+    
+    --color-festivo-local: #9d4edd;
+    --color-festivo-especial: #f4a261;
+    --color-festivo-nolocal: #2a9d8f;
     
     /* Shadows */
     --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
@@ -299,7 +305,8 @@ input:focus, select:focus {
     cursor: pointer;
     transition: var(--transition-fast);
     position: relative;
-    padding: 0.25rem;
+    padding: 0.1rem;
+    overflow: hidden;
 }
 
 .calendar-day:hover {
@@ -308,15 +315,54 @@ input:focus, select:focus {
 }
 
 .calendar-day.selected {
-    background: var(--color-primary);
     color: white;
+}
+
+.calendar-day.selected.ordinaria {
+    background: var(--color-primary);
     border-color: var(--color-primary);
     box-shadow: 0 0 10px rgba(230, 57, 70, 0.3);
 }
 
+.calendar-day.selected.complementaria {
+    background: var(--color-secondary);
+    border-color: var(--color-secondary);
+    box-shadow: 0 0 10px rgba(45, 140, 255, 0.3);
+}
+
+.calendar-day.festivo-local {
+    color: var(--color-festivo-local);
+    font-weight: 700;
+}
+
+.calendar-day.festivo-local.selected {
+    color: white;
+    border: 2px solid var(--color-festivo-local);
+}
+
+.calendar-day.festivo-especial {
+    color: var(--color-festivo-especial);
+    font-weight: 700;
+}
+
+.calendar-day.festivo-especial.selected {
+    color: white;
+    border: 2px solid var(--color-festivo-especial);
+}
+
+.calendar-day.festivo-no_local {
+    color: var(--color-festivo-nolocal);
+    font-weight: 700;
+}
+
+.calendar-day.festivo-no_local.selected {
+    color: white;
+    border: 2px solid var(--color-festivo-nolocal);
+}
+
 .calendar-day .day-num {
     font-weight: 700;
-    font-size: 1.1rem;
+    font-size: 1rem;
     line-height: 1;
 }
 
@@ -326,13 +372,20 @@ input:focus, select:focus {
     opacity: 0.7;
 }
 
-.calendar-day .shift-indicator {
+.calendar-day .shift-unidad {
     font-size: 0.65rem;
-    font-weight: 600;
+    font-weight: 800;
     margin-top: 2px;
-    background: rgba(0,0,0,0.1);
-    padding: 1px 4px;
+    background: rgba(0,0,0,0.15);
+    padding: 2px 6px;
     border-radius: 4px;
+    text-align: center;
+    line-height: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 90%;
+    color: inherit;
 }
 
 /* Results Section */
@@ -411,15 +464,28 @@ input:focus, select:focus {
     to { opacity: 1; transform: translateX(0); }
 }
 
-.calendar-day .shift-unidad {
-    font-size: 0.55rem;
-    font-weight: 800;
-    margin-top: 2px;
-    color: var(--color-primary);
-    text-align: center;
-    line-height: 1;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: 90%;
+
+
+/* Toast Notification */
+.toast {
+    position: fixed;
+    top: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--color-success);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-full);
+    font-weight: 600;
+    font-size: 0.85rem;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition-normal);
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.toast.show {
+    top: 20px;
+    opacity: 1;
 }

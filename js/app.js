@@ -1,50 +1,49 @@
-// --- DATA MODULE ---
-const data = {
-    conceptos_comunes: { 
-        plus_asistencia_puntualidad: 126.40,
-        precio_nocturnidad: 0.83,
-        precio_domingo: 0.61,
-        precio_festivo: 3.11,
-        precio_dieta: 10.00 // Placeholder, can be adjusted in future
-    },
-    categorias: {
-        tes_conductor: {
-            nombre: "TES Conductor",
-            salario_base: 1622.32, 
-            comp_formacion: 279.80,
-            trienios: { "0": 0.00, "1": 27.48, "2": 54.95, "3": 82.42, "4": 109.88, "5": 137.35, "6": 164.82, "7": 192.29 },
-            precio_hora: { "0": 16.29, "1": 16.52, "2": 16.76, "3": 16.99, "4": 17.23, "5": 17.46, "6": 17.70, "7": 17.93 }
-        },
-        tes_ayudante: {
-            nombre: "TES Asistent/Portalliteras",
-            salario_base: 1512.13, 
-            comp_formacion: 260.36,
-            trienios: { "0": 0.00, "1": 23.93, "2": 47.88, "3": 71.80, "4": 95.75, "5": 119.68, "6": 143.62, "7": 167.56 },
-            precio_hora: { "0": 15.18, "1": 15.38, "2": 15.59, "3": 15.79, "4": 16.00, "5": 16.20, "6": 16.41, "7": 16.61 }
-        },
-        tes_portalliteras: {
-            nombre: "TES Portalliteras",
-            salario_base: 1467.04, 
-            comp_formacion: 252.39,
-            trienios: { "0": 0.00, "1": 22.50, "2": 45.00, "3": 67.51, "4": 90.00, "5": 112.51, "6": 135.00, "7": 157.50 },
-            precio_hora: { "0": 14.72, "1": 14.92, "2": 15.11, "3": 15.30, "4": 15.49, "5": 15.69, "6": 15.88, "7": 16.07 }
-        }
-    }
-};
-
-function getCategoryData(categoryKey) {
-    return data.categorias[categoryKey] || null;
+// --- HOLIDAY CALCULATION ---
+function getEasterSunday(year) {
+    const f = Math.floor,
+          G = year % 19,
+          C = f(year / 100),
+          H = (C - f(C / 4) - f((8 * C + 13) / 25) + 19 * G + 15) % 30,
+          I = H - f(H / 28) * (1 - f(29 / (H + 1)) * f((21 - G) / 11)),
+          J = (year + f(year / 4) + I + 2 - C + f(C / 4)) % 7,
+          L = I - J,
+          month = 3 + f((L + 40) / 44),
+          day = L + 28 - 31 * f(month / 4);
+    return new Date(year, month - 1, day);
 }
 
-function getPriceHour(categoryKey, trienio) {
-    const cat = getCategoryData(categoryKey);
-    return cat ? cat.precio_hora[trienio] || 0 : 0;
+function getHolidayInfo(dateObj, localHolidaysObj) {
+    const y = dateObj.getFullYear();
+    const m = dateObj.getMonth();
+    const d = dateObj.getDate();
+    const dateStr = formatDate(dateObj);
+    
+    if (localHolidaysObj && localHolidaysObj[dateStr]) return 'local';
+    
+    if (m === 11 && d === 25) return 'especial';
+    if (m === 0 && d === 1) return 'especial';
+    if (m === 5 && d === 24) return 'especial';
+    
+    const easter = getEasterSunday(y);
+    const viernesSanto = new Date(easter);
+    viernesSanto.setDate(easter.getDate() - 2);
+    if (m === viernesSanto.getMonth() && d === viernesSanto.getDate()) return 'especial';
+    
+    const lunesPascua = new Date(easter);
+    lunesPascua.setDate(easter.getDate() + 1);
+    if (m === lunesPascua.getMonth() && d === lunesPascua.getDate()) return 'especial';
+    
+    const nonLocalDates = [[0, 6], [4, 1], [7, 15], [8, 11], [9, 12], [10, 1], [11, 6], [11, 8], [11, 26]];
+    for (const [hm, hd] of nonLocalDates) {
+        if (m === hm && d === hd) return 'no_local';
+    }
+    return null;
 }
 
 // --- CALCULATOR MODULE ---
-function calculateShiftVariables(dateStr, timeStr, durationHours) {
+function calculateShiftVariables(dateStr, timeStr, durationHours, prices, localHolidaysObj) {
     if (!timeStr || !durationHours || durationHours <= 0) {
-        return { nightHours: 0, sundayHours: 0 };
+        return { nightHours: 0, sundayHours: 0, fLocalHours: 0, fEspecialHours: 0, fNoLocalHours: 0 };
     }
     
     const [hours, minutes] = timeStr.split(':').map(Number);
@@ -55,30 +54,54 @@ function calculateShiftVariables(dateStr, timeStr, durationHours) {
     
     let nightHours = 0;
     let sundayHours = 0;
+    let fLocalHours = 0;
+    let fEspecialHours = 0;
+    let fNoLocalHours = 0;
     
-    const stepMs = 60000; // 1 minuto
+    const stepMs = 60000;
     let current = new Date(start.getTime());
     
     while (current < end) {
         const h = current.getHours();
-        const day = current.getDay(); // 0 es Domingo
+        const day = current.getDay();
         
-        // Nocturnidad: 22:00 a 06:00
-        if (h >= 22 || h < 6) {
-            nightHours += 1/60;
-        }
+        if (h >= 22 || h < 6) nightHours += 1/60;
         
-        // Domingos: de 00:00 a 24:00 del domingo
+        let minPrice = -1;
+        let minuteCat = null;
+        
         if (day === 0) {
-            sundayHours += 1/60;
+            minPrice = prices.domingo;
+            minuteCat = 'sunday';
         }
+        
+        const holType = getHolidayInfo(current, localHolidaysObj);
+        const m = current.getMonth();
+        const d = current.getDate();
+        const isSpecialEve = (m === 11 && (d === 24 || d === 31) && h >= 22);
+        
+        if (isSpecialEve || holType === 'especial') {
+            if (prices.especial > minPrice) { minPrice = prices.especial; minuteCat = 'especial'; }
+        } else if (holType === 'local') {
+            if (prices.local > minPrice) { minPrice = prices.local; minuteCat = 'local'; }
+        } else if (holType === 'no_local') {
+            if (prices.no_local > minPrice) { minPrice = prices.no_local; minuteCat = 'no_local'; }
+        }
+        
+        if (minuteCat === 'sunday') sundayHours += 1/60;
+        else if (minuteCat === 'especial') fEspecialHours += 1/60;
+        else if (minuteCat === 'local') fLocalHours += 1/60;
+        else if (minuteCat === 'no_local') fNoLocalHours += 1/60;
         
         current.setTime(current.getTime() + stepMs);
     }
     
     return {
         nightHours: Math.round(nightHours * 100) / 100,
-        sundayHours: Math.round(sundayHours * 100) / 100
+        sundayHours: Math.round(sundayHours * 100) / 100,
+        fLocalHours: Math.round(fLocalHours * 100) / 100,
+        fEspecialHours: Math.round(fEspecialHours * 100) / 100,
+        fNoLocalHours: Math.round(fNoLocalHours * 100) / 100
     };
 }
 
@@ -123,7 +146,8 @@ const state = {
         month: null,
         dates: []
     },
-    shifts: {}
+    shifts: {},
+    localHolidays: {}
 };
 
 // --- DOM ELEMENTS ---
@@ -159,6 +183,7 @@ const elements = {
     // Modal
     modalOverlay: document.getElementById('day-modal'),
     modalTitle: document.getElementById('modal-date-title'),
+    modalLocalHoliday: document.getElementById('modal-local-holiday'),
     modalShiftType: document.getElementById('modal-shift-type'),
     modalTimeConfig: document.getElementById('modal-time-config'),
     modalUnidad: document.getElementById('modal-unidad'),
@@ -177,11 +202,14 @@ const elements = {
     claimAbonadoProlong: document.getElementById('claim-abonado-prolong'),
     claimAbonadoNight: document.getElementById('claim-abonado-night'),
     claimAbonadoSunday: document.getElementById('claim-abonado-sunday'),
-    claimAbonadoFestivo: document.getElementById('claim-abonado-festivo'),
+    claimAbonadoFLocal: document.getElementById('claim-abonado-flocal'),
+    claimAbonadoFEspecial: document.getElementById('claim-abonado-fespecial'),
+    claimAbonadoFEstatal: document.getElementById('claim-abonado-festatal'),
     claimAbonadoDietas: document.getElementById('claim-abonado-dietas'),
     btnGenerateClaim: document.getElementById('btn-generate-claim'),
     btnCopyClaim: document.getElementById('btn-copy-claim'),
-    claimText: document.getElementById('claim-text')
+    claimText: document.getElementById('claim-text'),
+    toastNotification: document.getElementById('toast-notification')
 };
 
 let currentEditingDate = null;
@@ -264,7 +292,10 @@ function setupEventListeners() {
     elements.btnGenerateClaim.addEventListener('click', generateClaimText);
     elements.btnCopyClaim.addEventListener('click', () => {
         navigator.clipboard.writeText(elements.claimText.value).then(() => {
-            alert('Texto copiado al portapapeles');
+            elements.toastNotification.classList.add('show');
+            setTimeout(() => {
+                elements.toastNotification.classList.remove('show');
+            }, 3000);
         });
     });
 }
@@ -391,10 +422,18 @@ function renderCalendar() {
         div.className = 'calendar-day';
         if (shift && shift.type !== 'none') {
             div.classList.add('selected');
+            div.classList.add(shift.type); // ordinaria o complementaria
         }
         
         const isSunday = date.getDay() === 0;
-        if (isSunday) div.style.color = shift && shift.type !== 'none' ? 'white' : 'var(--color-primary)';
+        const holType = getHolidayInfo(date, state.localHolidays);
+        
+        if (holType) {
+            div.classList.add('festivo');
+            div.classList.add(`festivo-${holType}`);
+        } else if (isSunday) {
+            div.style.color = shift && shift.type !== 'none' ? 'white' : 'var(--color-primary)';
+        }
         
         div.innerHTML = `
             <span class="day-num">${date.getDate()}</span>
@@ -402,16 +441,10 @@ function renderCalendar() {
         `;
         
         if (shift && shift.type !== 'none') {
-            const ind = document.createElement('span');
-            ind.className = 'shift-indicator';
-            ind.textContent = shift.type === 'ordinaria' ? 'Ord' : 'Comp';
-            div.appendChild(ind);
-            
             if (shift.unidad) {
                 const uni = document.createElement('span');
                 uni.className = 'shift-unidad';
                 uni.textContent = shift.unidad;
-                if (isSunday) uni.style.color = '#fff';
                 div.appendChild(uni);
             }
         }
@@ -421,20 +454,24 @@ function renderCalendar() {
                 // Paint mode
                 const time = elements.inpDefaultTime.value || '07:00';
                 const dur = parseInt(elements.inpDefaultDuration.value, 10) || 12;
-                const unidad = elements.inpDefaultUnidad.value || '';
+                const unidad = elements.inpDefaultUnidad.value.trim();
                 
-                // Toggle off if already identically configured? Or just overwrite?
-                // Let's just assign/overwrite. If user wants to delete, they can open modal.
-                // Or maybe if it's already assigned with paint mode, we delete it?
-                // Overwriting is simpler and more predictable for painting.
-                state.shifts[dateStr] = {
-                    type: 'ordinaria',
-                    time: time,
-                    duration: dur,
-                    unidad: unidad,
-                    prolongation: 0,
-                    diets: 0
-                };
+                if (shift && shift.type !== 'none') {
+                    delete state.shifts[dateStr];
+                } else {
+                    if (!unidad) {
+                        alert('Debes introducir el nombre de la Unidad antes de pintar el turno.');
+                        return;
+                    }
+                    state.shifts[dateStr] = {
+                        type: 'ordinaria', // By default paint mode creates ordinary shifts
+                        time: time,
+                        duration: dur,
+                        unidad: unidad,
+                        prolongation: 0,
+                        diets: 0
+                    };
+                }
                 renderCalendar();
             } else {
                 openDayModal(dateStr, date);
@@ -450,6 +487,8 @@ function openDayModal(dateStr, dateObj) {
     const shift = state.shifts[dateStr] || { type: 'none', unidad: '', time: '07:00', duration: 12, prolongation: 0, diets: 0 };
     
     elements.modalTitle.textContent = dateObj.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' });
+    
+    elements.modalLocalHoliday.checked = !!state.localHolidays[dateStr];
     
     elements.modalShiftType.value = shift.type;
     elements.modalTimeConfig.style.display = (shift.type !== 'none') ? 'block' : 'none';
@@ -471,13 +510,26 @@ function closeDayModal() {
 function saveDayModal() {
     if (!currentEditingDate) return;
     
+    if (elements.modalLocalHoliday.checked) {
+        state.localHolidays[currentEditingDate] = true;
+    } else {
+        delete state.localHolidays[currentEditingDate];
+    }
+    
     const type = elements.modalShiftType.value;
+    const unidad = elements.modalUnidad.value.trim();
+    
+    if (type !== 'none' && !unidad) {
+        alert('El campo Unidad es obligatorio para guardar un turno.');
+        return;
+    }
+    
     if (type === 'none') {
         delete state.shifts[currentEditingDate];
     } else {
         state.shifts[currentEditingDate] = {
             type: type,
-            unidad: elements.modalUnidad.value,
+            unidad: unidad,
             time: elements.modalTime.value,
             duration: parseInt(elements.modalDuration.value, 10),
             prolongation: parseInt(elements.modalProlongation.value, 10),
@@ -496,6 +548,9 @@ function calculateResults() {
         comp_hours: 0,
         night_hours: 0,
         sunday_hours: 0,
+        f_local_hours: 0,
+        f_especial_hours: 0,
+        f_no_local_hours: 0,
         prolongation_mins: 0,
         diets: 0
     };
@@ -510,9 +565,18 @@ function calculateResults() {
         totals.prolongation_mins += shift.prolongation;
         totals.diets += shift.diets;
         
-        const vars = calculateShiftVariables(dateStr, shift.time, shift.duration);
+        const prices = {
+            domingo: data.conceptos_comunes.precio_domingo,
+            local: data.conceptos_comunes.precio_festivo_local,
+            especial: data.conceptos_comunes.precio_festivo_especial,
+            no_local: data.conceptos_comunes.precio_festivo_no_local
+        };
+        const vars = calculateShiftVariables(dateStr, shift.time, shift.duration, prices, state.localHolidays);
         totals.night_hours += vars.nightHours;
         totals.sunday_hours += vars.sundayHours;
+        totals.f_local_hours += vars.fLocalHours;
+        totals.f_especial_hours += vars.fEspecialHours;
+        totals.f_no_local_hours += vars.fNoLocalHours;
     }
     
     const p_hora = getPriceHour(state.employee.categoryKey, state.employee.trienio);
@@ -528,7 +592,16 @@ function calculateResults() {
     const f_sunday = totals.sunday_hours * p_domingo;
     const f_diets = totals.diets * p_dieta;
     
-    const subTotalVariables = f_comp + f_prolong + f_night + f_sunday + f_diets;
+    const prices = {
+        local: data.conceptos_comunes.precio_festivo_local,
+        especial: data.conceptos_comunes.precio_festivo_especial,
+        no_local: data.conceptos_comunes.precio_festivo_no_local
+    };
+    const f_flocal = totals.f_local_hours * prices.local;
+    const f_fespecial = totals.f_especial_hours * prices.especial;
+    const f_fnolocal = totals.f_no_local_hours * prices.no_local;
+    
+    const subTotalVariables = f_comp + f_prolong + f_night + f_sunday + f_flocal + f_fespecial + f_fnolocal + f_diets;
     const aCuentaConvenio = subTotalVariables * 0.0404;
     const totalFin = subTotalVariables + aCuentaConvenio;
     
@@ -578,6 +651,16 @@ function calculateResults() {
                 <span>Dietas (${fmt(totals.diets)} uds)</span>
                 <strong>${eur.format(f_diets)}</strong>
             </div>`;
+    }
+    
+    if (totals.f_local_hours > 0) {
+        html += `<div class="result-row"><span>Festivo Local (${fmt(totals.f_local_hours)} h)</span><strong>${eur.format(f_flocal)}</strong></div>`;
+    }
+    if (totals.f_especial_hours > 0) {
+        html += `<div class="result-row"><span>Festivo Especial (${fmt(totals.f_especial_hours)} h)</span><strong>${eur.format(f_fespecial)}</strong></div>`;
+    }
+    if (totals.f_no_local_hours > 0) {
+        html += `<div class="result-row"><span>Festivo No Local (${fmt(totals.f_no_local_hours)} h)</span><strong>${eur.format(f_fnolocal)}</strong></div>`;
     }
     
     if (aCuentaConvenio > 0) {
@@ -638,6 +721,9 @@ function generateClaimText() {
     if (totals.comp_hours > 0) genArr.push(`${fmt(totals.comp_hours)} horas complementarias`);
     if (totals.night_hours > 0) genArr.push(`${fmt(totals.night_hours)} h nocturnidad`);
     if (totals.sunday_hours > 0) genArr.push(`${fmt(totals.sunday_hours)} horas de domingos`);
+    if (totals.f_local_hours > 0) genArr.push(`${fmt(totals.f_local_hours)} horas de festivos locales`);
+    if (totals.f_especial_hours > 0) genArr.push(`${fmt(totals.f_especial_hours)} horas de festivos especiales`);
+    if (totals.f_no_local_hours > 0) genArr.push(`${fmt(totals.f_no_local_hours)} horas de festivos no locales`);
     if (totals.prolongation_mins > 0) genArr.push(`${fmt(totals.prolongation_mins)} minutos de prolongación`);
     if (totals.diets > 0) genArr.push(`${fmt(totals.diets)} dietas`);
     
@@ -645,14 +731,18 @@ function generateClaimText() {
     const abonadoProlong = parseFloat(elements.claimAbonadoProlong.value) || 0;
     const abonadoNight = parseFloat(elements.claimAbonadoNight.value) || 0;
     const abonadoSunday = parseFloat(elements.claimAbonadoSunday.value) || 0;
-    const abonadoFestivo = parseFloat(elements.claimAbonadoFestivo.value) || 0;
+    const abonadoFLocal = parseFloat(elements.claimAbonadoFLocal.value) || 0;
+    const abonadoFEspecial = parseFloat(elements.claimAbonadoFEspecial.value) || 0;
+    const abonadoFEstatal = parseFloat(elements.claimAbonadoFEstatal.value) || 0;
     const abonadoDietas = parseFloat(elements.claimAbonadoDietas.value) || 0;
     
     let abnArr = [];
     if (abonadoComp > 0) abnArr.push(`${fmt(abonadoComp)} horas complementarias`);
     if (abonadoNight > 0) abnArr.push(`${fmt(abonadoNight)} h nocturnidad`);
     if (abonadoSunday > 0) abnArr.push(`${fmt(abonadoSunday)} horas de domingos`);
-    if (abonadoFestivo > 0) abnArr.push(`${fmt(abonadoFestivo)} horas de festivos`);
+    if (abonadoFLocal > 0) abnArr.push(`${fmt(abonadoFLocal)} horas de festivos locales`);
+    if (abonadoFEspecial > 0) abnArr.push(`${fmt(abonadoFEspecial)} horas de festivos especiales`);
+    if (abonadoFEstatal > 0) abnArr.push(`${fmt(abonadoFEstatal)} horas de festivos no locales`);
     if (abonadoProlong > 0) abnArr.push(`${fmt(abonadoProlong)} minutos de prolongación`);
     if (abonadoDietas > 0) abnArr.push(`${fmt(abonadoDietas)} dietas`);
     

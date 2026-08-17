@@ -1,12 +1,12 @@
-export const data = {
+const data = {
     conceptos_comunes: { 
         plus_asistencia_puntualidad: 126.40,
         precio_nocturnidad: 0.83,
         precio_domingo: 0.61,
-        precio_festivo_local: 3.11,
+        precio_festivo_local: 3.11, //pendiente ajuste
         precio_festivo_no_local: 3.11,
-        precio_festivo_especial: 3.11,
-        precio_dieta: 10.00 // Placeholder, can be adjusted in future
+        precio_festivo_especial: 6.24,
+        precio_dieta: 12.47 
     },
     categorias: {
         tes_conductor: {
@@ -33,11 +33,11 @@ export const data = {
     }
 };
 
-export function getCategoryData(categoryKey) {
+function getCategoryData(categoryKey) {
     return data.categorias[categoryKey] || null;
 }
 
-export function getPriceHour(categoryKey, trienio) {
+function getPriceHour(categoryKey, trienio) {
     const cat = getCategoryData(categoryKey);
     return cat ? cat.precio_hora[trienio] || 0 : 0;
 }
