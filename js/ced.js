@@ -12,9 +12,6 @@ const VARIABLES = [
 ];
 
 const MONTHS = [
-    'Octubre (Año Anterior)',
-    'Noviembre (Año Anterior)',
-    'Diciembre (Año Anterior)',
     'Enero',
     'Febrero',
     'Marzo',
@@ -23,7 +20,10 @@ const MONTHS = [
     'Junio',
     'Julio',
     'Agosto',
-    'Septiembre'
+    'Septiembre',
+    'Octubre',
+    'Noviembre',
+    'Diciembre'
 ];
 
 const MINIMO_CED = 219.31;
@@ -85,17 +85,31 @@ function calculateCED() {
     
     let sumOfAverages = 0;
     
-    // Process each variable independently
-    VARIABLES.forEach(variable => {
+    const calcGroups = [
+        { label: 'H. Complementarias', ids: ['comp'] },
+        { label: 'Nocturnidad', ids: ['night'] },
+        { label: 'Domingos y Festivos', ids: ['sunday', 'flocal', 'fespecial', 'fnolocal'] },
+        { label: 'Prolongación', ids: ['prolong'] },
+        { label: 'Dietas', ids: ['dietas'] }
+    ];
+    
+    // Process each variable group
+    calcGroups.forEach(group => {
         let sum = 0;
         let monthsWithAmount = 0;
         
-        // Loop through all 12 months for this variable
+        // Loop through all 12 months for this group
         for (let m = 0; m < 12; m++) {
-            const input = document.getElementById(`m${m}-${variable.id}`);
-            const val = parseFloat(input.value) || 0;
-            if (val > 0) {
-                sum += val;
+            let monthSum = 0;
+            group.ids.forEach(id => {
+                const input = document.getElementById(`m${m}-${id}`);
+                if (input) {
+                    monthSum += parseFloat(input.value) || 0;
+                }
+            });
+            
+            if (monthSum > 0) {
+                sum += monthSum;
                 monthsWithAmount++;
             }
         }
@@ -108,13 +122,13 @@ function calculateCED() {
         if (monthsWithAmount >= 6) {
             sumOfAverages += avg;
             itemDiv.innerHTML = `
-                <span><strong>${variable.label}</strong> (Cobrado ${monthsWithAmount} meses)</span>
+                <span><strong>${group.label}</strong> (Cobrado ${monthsWithAmount} meses)</span>
                 <span>${avg.toFixed(2)} €</span>
             `;
         } else {
             itemDiv.className += ' rejected';
             itemDiv.innerHTML = `
-                <span><strong>${variable.label}</strong> (Solo ${monthsWithAmount} meses, min 6)</span>
+                <span><strong>${group.label}</strong> (Solo ${monthsWithAmount} meses, min 6)</span>
                 <span>0.00 €</span>
             `;
         }

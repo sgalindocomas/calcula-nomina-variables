@@ -123,14 +123,17 @@
     <div class="app-container shadow-glass" style="max-width: 800px;">
         <!-- Header -->
         <header class="header">
-            <img src="./ccoo.png" alt="Logo CCOO Catalunya" style="height: 50px;">
-            <h1 style="font-size: 1.8rem; margin-top: 0.5rem;">Calculadora CED</h1>
-            <p style="font-size: 0.9rem;">Complemento Especial de Dedicación (Septiembre)</p>
+            <div style="display: flex; align-items: center; justify-content: center; gap: 0.8rem; margin-bottom: 1.5rem;">
+                <span style="font-size: 0.95rem; font-weight: 800; color: #000; text-transform: uppercase;">Agrupació Ambulàncies</span>
+                <img src="./ccoo.png" alt="Logo CCOO Catalunya" style="height: 35px; margin-bottom: 0;">
+            </div>
+            <h1 style="font-size: 1.8rem; margin-top: 0;">Calculadora CED</h1>
+            <p style="font-size: 0.9rem;">Complemento Especial de Dedicación</p>
         </header>
 
         <main style="padding: 2rem;">
             <div style="background: var(--color-primary-light); border-radius: 8px; padding: 1rem; margin-bottom: 2rem; font-size: 0.85rem; border: 1px solid var(--color-primary);">
-                <strong>Instrucciones:</strong> Introduce en euros (€) el importe cobrado de cada variable en los últimos 12 meses (desde octubre del año anterior hasta septiembre actual). Las variables que no hayas cobrado al menos durante 6 meses serán descartadas.
+                <strong>Instrucciones:</strong> Introduce en euros (€) el importe cobrado de cada variable en los 12 meses del año anterior (desde enero hasta diciembre). Las variables que no hayas cobrado al menos durante 6 meses serán descartadas (los domingos y festivos se computan de forma conjunta).
             </div>
 
             <form id="ced-form">
@@ -154,6 +157,13 @@
                 <div class="result-note" id="result-note"></div>
             </div>
         </main>
+
+        <!-- Affiliation Banner -->
+        <div class="affiliation-banner">
+            <h3>¡Hazte fuerte, afíliate a CCOO!</h3>
+            <p>Juntos y juntas somos más fuertes. Únete al sindicato para defender tus derechos y conseguir mejoras laborales en nuestro sector.</p>
+            <a href="https://www.ccoo.cat/afiliat" target="_blank" class="btn-white">Afíliate Ahora</a>
+        </div>
     </div>
 
     <!-- Global Footer -->
