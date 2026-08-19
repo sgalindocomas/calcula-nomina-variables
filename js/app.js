@@ -197,7 +197,12 @@ const elements = {
     // Step 4
     resultsContainer: document.getElementById('results-container'),
     btnOpenClaim: document.getElementById('btn-open-claim'),
+    btnOpenInfo: document.getElementById('btn-open-info'),
+    actionButtonsContainer: document.getElementById('action-buttons-container'),
     claimSection: document.getElementById('claim-section'),
+    infoSection: document.getElementById('info-section'),
+    infoText: document.getElementById('info-text'),
+    btnCopyInfo: document.getElementById('btn-copy-info'),
     claimAbonadoComp: document.getElementById('claim-abonado-comp'),
     claimAbonadoProlong: document.getElementById('claim-abonado-prolong'),
     claimAbonadoNight: document.getElementById('claim-abonado-night'),
@@ -282,11 +287,26 @@ function setupEventListeners() {
     
     elements.btnOpenClaim.addEventListener('click', () => {
         elements.claimSection.style.display = 'block';
-        elements.btnOpenClaim.style.display = 'none';
+        elements.actionButtonsContainer.style.display = 'none';
         
         // Clear text inside when re-opened just in case
         elements.claimText.value = '';
         elements.btnCopyClaim.style.display = 'none';
+    });
+
+    elements.btnOpenInfo.addEventListener('click', () => {
+        elements.infoSection.style.display = 'block';
+        elements.actionButtonsContainer.style.display = 'none';
+        generateInfoText();
+    });
+
+    elements.btnCopyInfo.addEventListener('click', () => {
+        navigator.clipboard.writeText(elements.infoText.value).then(() => {
+            elements.toastNotification.classList.add('show');
+            setTimeout(() => {
+                elements.toastNotification.classList.remove('show');
+            }, 3000);
+        });
     });
     
     elements.btnGenerateClaim.addEventListener('click', generateClaimText);
@@ -746,7 +766,7 @@ function generateClaimText() {
     if (abonadoProlong > 0) abnArr.push(`${fmt(abonadoProlong)} minutos de prolongación`);
     if (abonadoDietas > 0) abnArr.push(`${fmt(abonadoDietas)} dietas`);
     
-    let text = `Hola, no he cobrado las variables de la nómina de ${mesTexto}.\n\n`;
+    let text = `Hola, no he cobrado de forma correcta las variables de la nómina de ${mesTexto}.\n\n`;
     
     if (ordText.length > 0) {
         text += `He trabajado de jornada los siguientes días: ${ordText.join(', ')}.\n`;
@@ -770,6 +790,66 @@ function generateClaimText() {
     
     elements.claimText.value = text.trim();
     elements.btnCopyClaim.style.display = 'block';
+}
+
+function generateInfoText() {
+    if (!lastCalculatedTotals) return;
+    
+    const sortedDates = Object.keys(state.shifts).sort();
+    const monthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+    
+    let ordText = [];
+    let compText = [];
+    
+    sortedDates.forEach(dateStr => {
+        const shift = state.shifts[dateStr];
+        if (shift.type === 'none') return;
+        
+        const d = new Date(dateStr);
+        const formatStr = `${d.getDate()}/${monthNames[d.getMonth()]} ${shift.unidad || ''} ${shift.duration}h`;
+        
+        if (shift.type === 'ordinaria') {
+            ordText.push(formatStr.trim());
+        } else if (shift.type === 'complementaria') {
+            compText.push(formatStr.trim());
+        }
+    });
+    
+    const mesSeleccionadoParts = elements.inpMonth.value.split('-');
+    const monthNamesFull = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+    const mesTexto = mesSeleccionadoParts.length === 2 ? `${monthNamesFull[parseInt(mesSeleccionadoParts[1], 10) - 1]}` : elements.inpMonth.value;
+    
+    const totals = lastCalculatedTotals;
+    
+    const fmt = num => Number.isInteger(num) ? num : parseFloat(num.toFixed(2));
+    
+    let genArr = [];
+    if (totals.comp_hours > 0) genArr.push(`${fmt(totals.comp_hours)} horas complementarias`);
+    if (totals.night_hours > 0) genArr.push(`${fmt(totals.night_hours)} h nocturnidad`);
+    if (totals.sunday_hours > 0) genArr.push(`${fmt(totals.sunday_hours)} horas de domingos`);
+    if (totals.f_local_hours > 0) genArr.push(`${fmt(totals.f_local_hours)} horas de festivos locales`);
+    if (totals.f_especial_hours > 0) genArr.push(`${fmt(totals.f_especial_hours)} horas de festivos especiales`);
+    if (totals.f_no_local_hours > 0) genArr.push(`${fmt(totals.f_no_local_hours)} horas de festivos no locales`);
+    if (totals.prolongation_mins > 0) genArr.push(`${fmt(totals.prolongation_mins)} minutos de prolongación`);
+    if (totals.diets > 0) genArr.push(`${fmt(totals.diets)} dietas`);
+    
+    let text = `Hola, informo de las guardias y variables generadas este mes de ${mesTexto}.\n\n`;
+    
+    if (ordText.length > 0) {
+        text += `He trabajado de jornada los siguientes días: ${ordText.join(', ')}.\n`;
+    }
+    
+    if (compText.length > 0) {
+        text += `Y los siguientes días de jornada complementaria: ${compText.join(', ')}.\n`;
+    }
+    
+    if (ordText.length > 0 || compText.length > 0) text += '\n';
+    
+    if (genArr.length > 0) {
+        text += `Generando: ${genArr.join(', ')}.`;
+    }
+    
+    elements.infoText.value = text.trim();
 }
 
 // Bootstrap
