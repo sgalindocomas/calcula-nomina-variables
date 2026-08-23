@@ -385,7 +385,7 @@ function updateStepperUI() {
     elements.btnPrev.style.visibility = state.currentStep === 1 ? 'hidden' : 'visible';
     elements.btnNext.textContent = state.currentStep === state.totalSteps ? 'Finalizar' : 'Siguiente';
     
-    if (state.currentStep === state.totalSteps) {
+    if (state.currentStep === state.totalSteps || state.currentStep === 4) {
         elements.btnNext.style.display = 'none';
     } else {
         elements.btnNext.style.display = 'inline-flex';
@@ -986,7 +986,7 @@ function calculatePayrollSimulation() {
     let basesHTML = `
         <div style="background: var(--color-surface); padding: 1rem; border-radius: 6px; border: 1px solid var(--color-border); margin-bottom: 1rem;">
             <h3 style="color: var(--color-text); font-size: 1.1rem; margin-bottom: 0.5rem; border-bottom: 1px solid var(--color-border); padding-bottom: 0.5rem;">Bases de Cotización</h3>
-            <div class="result-row"><span>Prorrata Pagas Extras</span><strong>${eur.format(prorrataMensualPagasExtras)}</strong></div>
+            <div class="result-row"><span>Prorrata Pagas Extras</span><strong>${isProrrateada ? '' : eur.format(prorrataMensualPagasExtras)}</strong></div>
             <div class="result-row"><span>Base IRPF</span><strong>${eur.format(baseIRPF)}</strong></div>
             <div class="result-row"><span>Base CC (Contingencias Comunes)</span><strong>${eur.format(baseCC)}</strong></div>
             <div class="result-row"><span>Base AT y Desempleo</span><strong>${eur.format(baseAT)}</strong></div>
