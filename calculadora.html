@@ -40,7 +40,11 @@
             </div>
             <div class="step-indicator" data-step="4">
                 <div class="step-circle">4</div>
-                <div class="step-label">Resumen</div>
+                <div class="step-label">Variables</div>
+            </div>
+            <div class="step-indicator" data-step="5">
+                <div class="step-circle">5</div>
+                <div class="step-label">Nómina</div>
             </div>
         </div>
 
@@ -124,9 +128,9 @@
                 </div>
             </section>
 
-            <!-- Step 4: Results (Merged Step 4 Adjustments into Step 3 Modal for better UX) -->
+            <!-- Step 4: Variables -->
             <section class="step-pane" id="step-4">
-                <h2>4. Resumen de Variables</h2>
+                <h2>4. Variables</h2>
                 <div id="results-container">
                     <!-- Injected via JS -->
                 </div>
@@ -144,7 +148,7 @@
                     </div>
                     
                     <div style="display: flex; justify-content: center;">
-                        <button type="button" id="btn-simulate-payroll" class="btn btn-primary" style="font-size: 1rem; width: 100%; max-width: 300px;">Simular Nómina</button>
+                        <button type="button" id="btn-simulate-payroll" class="btn btn-primary" style="font-size: 1rem; width: 100%; max-width: 300px; background-color: var(--color-border); border-color: var(--color-border); color: var(--color-text-muted); box-shadow: none;">🔨 Simular Nómina</button>
                     </div>
                 </div>
                 
@@ -198,6 +202,35 @@
                     <textarea id="claim-text" readonly style="width: 100%; height: 150px; font-size: 0.8rem; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 6px; background: var(--color-bg); margin-bottom: 1rem; resize: none;"></textarea>
                     
                     <button type="button" id="btn-copy-claim" class="btn btn-primary" style="width: 100%; display: none;">Copiar al Portapapeles</button>
+                </div>
+            </section>
+
+            <!-- Step 5: Nómina -->
+            <section class="step-pane" id="step-5">
+                <h2>5. Nómina</h2>
+                
+                <div id="sim-form-container">
+                    <div style="background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; padding: 1rem; border-radius: 6px; margin-bottom: 1.5rem; font-size: 0.85rem;">
+                        <strong>⚠️ Sección en desarrollo:</strong> Esta funcionalidad está en fase de pruebas y podría contener errores. Faltan por añadir conceptos como Incapacidad Temporal (IT) y permisos no retribuidos.
+                    </div>
+                    
+                    <p style="margin-bottom: 1.5rem;">Introduce los datos adicionales para calcular la nómina completa.</p>
+                    <div class="form-group">
+                        <label for="sim-irpf">IRPF (%)</label>
+                        <input type="number" id="sim-irpf" placeholder="Ej. 12" min="0" max="100" step="0.01" value="0">
+                    </div>
+                    <div style="display:flex; align-items:center; justify-content: space-between; background: var(--color-surface); padding: 0.5rem 1rem; border-radius: 6px; border: 1px solid var(--color-border); margin-bottom: 1.5rem;">
+                        <label for="sim-pagas-extra" style="margin:0; cursor:pointer; font-weight:600; color: var(--color-text);">Pagas extras prorrateadas</label>
+                        <input type="checkbox" id="sim-pagas-extra" style="width:1.2rem; height:1.2rem; cursor:pointer; accent-color: var(--color-primary);">
+                    </div>
+                    
+                    <div style="display: flex; justify-content: center; margin-top: 1.5rem;">
+                        <button type="button" id="btn-do-simulate" class="btn btn-primary" style="width: 100%; max-width: 300px;">Calcular</button>
+                    </div>
+                </div>
+                
+                <div id="sim-results" style="display: none; margin-top: 1rem;">
+                    <!-- Result placeholders -->
                 </div>
             </section>
 

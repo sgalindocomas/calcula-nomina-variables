@@ -136,7 +136,7 @@ function formatDate(date) {
 // --- GLOBAL STATE ---
 const state = {
     currentStep: 1,
-    totalSteps: 4,
+    totalSteps: 5,
     employee: {
         categoryKey: '',
         trienio: ''
@@ -158,7 +158,8 @@ const elements = {
         document.getElementById('step-1'),
         document.getElementById('step-2'),
         document.getElementById('step-3'),
-        document.getElementById('step-4')
+        document.getElementById('step-4'),
+        document.getElementById('step-5')
     ],
     indicators: document.querySelectorAll('.step-indicator'),
     
@@ -198,6 +199,7 @@ const elements = {
     resultsContainer: document.getElementById('results-container'),
     btnOpenClaim: document.getElementById('btn-open-claim'),
     btnOpenInfo: document.getElementById('btn-open-info'),
+    btnSimulatePayroll: document.getElementById('btn-simulate-payroll'),
     actionButtonsContainer: document.getElementById('action-buttons-container'),
     claimSection: document.getElementById('claim-section'),
     infoSection: document.getElementById('info-section'),
@@ -214,6 +216,13 @@ const elements = {
     btnGenerateClaim: document.getElementById('btn-generate-claim'),
     btnCopyClaim: document.getElementById('btn-copy-claim'),
     claimText: document.getElementById('claim-text'),
+    
+    // Step 5
+    simIrpf: document.getElementById('sim-irpf'),
+    simPagasExtra: document.getElementById('sim-pagas-extra'),
+    btnDoSimulate: document.getElementById('btn-do-simulate'),
+    simResults: document.getElementById('sim-results'),
+    
     toastNotification: document.getElementById('toast-notification')
 };
 
@@ -308,6 +317,19 @@ function setupEventListeners() {
             }, 3000);
         });
     });
+
+    let simulateClicks = 0;
+    elements.btnSimulatePayroll.addEventListener('click', () => {
+        simulateClicks++;
+        if (simulateClicks >= 5) {
+            if (state.currentStep === 4) {
+                goNext();
+            }
+            simulateClicks = 0;
+        }
+    });
+    
+    elements.btnDoSimulate.addEventListener('click', calculatePayrollSimulation);
     
     elements.btnGenerateClaim.addEventListener('click', generateClaimText);
     elements.btnCopyClaim.addEventListener('click', () => {
@@ -386,6 +408,9 @@ function updateStepperUI() {
             ind.classList.add('active');
         }
     });
+    
+    // Auto-scroll to top on step change
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // --- STEP 2: PERIOD ---
@@ -850,6 +875,157 @@ function generateInfoText() {
     }
     
     elements.infoText.value = text.trim();
+}
+
+function calculatePayrollSimulation() {
+    const irpfPercent = parseFloat(elements.simIrpf.value) || 0;
+    const isProrrateada = elements.simPagasExtra.checked;
+    
+    const catData = getCategoryData(state.employee.categoryKey);
+    if (!catData) {
+        alert("Faltan datos de empleado para simular. Vuelve al Paso 1.");
+        return;
+    }
+    
+    // --- 1. FIJOS ---
+    const salarioBase = catData.salario_base || 0;
+    const compFormacion = catData.comp_formacion || 0;
+    const antiguedad = catData.trienios[state.employee.trienio] || 0;
+    const plusAsistencia = data.conceptos_comunes.plus_asistencia_puntualidad || 0;
+    
+    const basePagaExtra = salarioBase + compFormacion + antiguedad;
+    const fijosSuma = basePagaExtra + plusAsistencia;
+    
+    // --- 2. VARIABLES ---
+    let variablesSuma = 0;
+    let prolongationSuma = 0;
+    let devengosObj = {};
+    
+    if (lastCalculatedTotals) {
+        const t = lastCalculatedTotals;
+        const p_hora = getPriceHour(state.employee.categoryKey, state.employee.trienio);
+        
+        const v_comp = t.comp_hours * p_hora;
+        const v_prolong = (t.prolongation_mins / 60) * p_hora;
+        const v_night = t.night_hours * data.conceptos_comunes.precio_nocturnidad;
+        const v_sunday = t.sunday_hours * data.conceptos_comunes.precio_domingo;
+        const v_flocal = t.f_local_hours * data.conceptos_comunes.precio_festivo_local;
+        const v_fespecial = t.f_especial_hours * data.conceptos_comunes.precio_festivo_especial;
+        const v_fnolocal = t.f_no_local_hours * data.conceptos_comunes.precio_festivo_no_local;
+        const v_diets = t.diets * data.conceptos_comunes.precio_dieta;
+        
+        prolongationSuma = v_prolong;
+        
+        if(v_comp > 0) devengosObj['H. Complementarias'] = v_comp;
+        if(v_prolong > 0) devengosObj['Prolongación Jornada'] = v_prolong;
+        if(v_night > 0) devengosObj['Nocturnidad'] = v_night;
+        if(v_sunday > 0) devengosObj['Domingos'] = v_sunday;
+        if(v_flocal > 0) devengosObj['Festivos Locales'] = v_flocal;
+        if(v_fespecial > 0) devengosObj['Festivos Especiales'] = v_fespecial;
+        if(v_fnolocal > 0) devengosObj['Festivos No Locales'] = v_fnolocal;
+        if(v_diets > 0) devengosObj['Dietas'] = v_diets;
+        
+        variablesSuma = v_comp + v_prolong + v_night + v_sunday + v_flocal + v_fespecial + v_fnolocal + v_diets;
+    }
+    
+    // --- 3. 4.04% ---
+    const sumaParaAcuenta = fijosSuma + variablesSuma;
+    const aCuentaConvenio = sumaParaAcuenta * 0.0404;
+    
+    // --- 4. PAGAS EXTRAS ---
+    const prorrataUnaPaga = basePagaExtra * 1.0404 / 12;
+    const prorrataMensualPagasExtras = prorrataUnaPaga * 2;
+    
+    let totalDevengado = fijosSuma + variablesSuma + aCuentaConvenio;
+    
+    if (isProrrateada) {
+        devengosObj['PP Verano (Prorrateada)'] = prorrataUnaPaga;
+        devengosObj['PP Invierno (Prorrateada)'] = prorrataUnaPaga;
+        totalDevengado += prorrataMensualPagasExtras;
+    }
+    
+    // --- 5. BASES DE COTIZACIÓN ---
+    const baseIRPF = totalDevengado;
+    const baseCC = totalDevengado - prolongationSuma + (isProrrateada ? 0 : prorrataMensualPagasExtras);
+    const baseAT = totalDevengado + (isProrrateada ? 0 : prorrataMensualPagasExtras);
+    
+    // --- 6. DEDUCCIONES ---
+    const dedIRPF = baseIRPF * (irpfPercent / 100);
+    const dedCC = baseCC * 0.047;
+    const dedMEI = baseCC * 0.0015;
+    const dedFP = baseAT * 0.0010;
+    const dedDesempleo = baseAT * 0.0155;
+    
+    const totalDeducciones = dedIRPF + dedCC + dedMEI + dedFP + dedDesempleo;
+    const liquido = totalDevengado - totalDeducciones;
+    
+    // --- 7. HTML RENDER ---
+    const eur = new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' });
+    
+    let devengosHTML = `
+        <div style="background: var(--color-surface); padding: 1rem; border-radius: 6px; border: 1px solid var(--color-border); margin-bottom: 1rem;">
+            <h3 style="color: var(--color-primary); font-size: 1.1rem; margin-bottom: 0.5rem; border-bottom: 1px solid var(--color-border); padding-bottom: 0.5rem;">Devengos</h3>
+            <div class="result-row"><span>Salario Base</span><strong>${eur.format(salarioBase)}</strong></div>
+            <div class="result-row"><span>Comp. Formación</span><strong>${eur.format(compFormacion)}</strong></div>
+            <div class="result-row"><span>Antigüedad</span><strong>${eur.format(antiguedad)}</strong></div>
+            <div class="result-row"><span>Plus Asistencia y Punt.</span><strong>${eur.format(plusAsistencia)}</strong></div>
+    `;
+    
+    for (const [name, val] of Object.entries(devengosObj)) {
+        devengosHTML += `<div class="result-row"><span>${name}</span><strong>${eur.format(val)}</strong></div>`;
+    }
+    
+    devengosHTML += `
+            <div class="result-row"><span>A cuenta convenio (4.04%)</span><strong>${eur.format(aCuentaConvenio)}</strong></div>
+            <div class="result-row" style="border-top: 2px solid var(--color-border); margin-top: 0.5rem; padding-top: 0.5rem;">
+                <span style="font-weight: 700;">TOTAL DEVENGADO</span><strong style="color: var(--color-primary);">${eur.format(totalDevengado)}</strong>
+            </div>
+        </div>
+    `;
+    
+    let basesHTML = `
+        <div style="background: var(--color-surface); padding: 1rem; border-radius: 6px; border: 1px solid var(--color-border); margin-bottom: 1rem;">
+            <h3 style="color: var(--color-text); font-size: 1.1rem; margin-bottom: 0.5rem; border-bottom: 1px solid var(--color-border); padding-bottom: 0.5rem;">Bases de Cotización</h3>
+            <div class="result-row"><span>Prorrata Pagas Extras</span><strong>${eur.format(prorrataMensualPagasExtras)}</strong></div>
+            <div class="result-row"><span>Base IRPF</span><strong>${eur.format(baseIRPF)}</strong></div>
+            <div class="result-row"><span>Base CC (Contingencias Comunes)</span><strong>${eur.format(baseCC)}</strong></div>
+            <div class="result-row"><span>Base AT y Desempleo</span><strong>${eur.format(baseAT)}</strong></div>
+        </div>
+    `;
+    
+    let deduccionesHTML = `
+        <div style="background: var(--color-surface); padding: 1rem; border-radius: 6px; border: 1px solid var(--color-border); margin-bottom: 1rem;">
+            <h3 style="color: var(--color-text-muted); font-size: 1.1rem; margin-bottom: 0.5rem; border-bottom: 1px solid var(--color-border); padding-bottom: 0.5rem;">Retenciones</h3>
+            <div class="result-row"><span>IRPF (${irpfPercent}%)</span><strong>-${eur.format(dedIRPF)}</strong></div>
+            <div class="result-row"><span>C. Comunes (4.7%)</span><strong>-${eur.format(dedCC)}</strong></div>
+            <div class="result-row"><span>MEI (0.15%)</span><strong>-${eur.format(dedMEI)}</strong></div>
+            <div class="result-row"><span>Formación Prof. (0.10%)</span><strong>-${eur.format(dedFP)}</strong></div>
+            <div class="result-row"><span>Desempleo (1.55%)</span><strong>-${eur.format(dedDesempleo)}</strong></div>
+            <div class="result-row" style="border-top: 2px solid var(--color-border); margin-top: 0.5rem; padding-top: 0.5rem;">
+                <span style="font-weight: 700;">TOTAL DEDUCCIONES</span><strong>-${eur.format(totalDeducciones)}</strong>
+            </div>
+        </div>
+    `;
+    
+    let liquidoHTML = `
+        <div style="background: var(--color-primary-light); padding: 1.5rem; border-radius: 6px; border: 2px solid var(--color-primary); text-align: center; margin-bottom: 1rem;">
+            <h3 style="color: var(--color-primary); font-size: 1.2rem; margin-bottom: 0.5rem;">Líquido a Percibir</h3>
+            <strong style="font-size: 2.2rem; color: var(--color-text); font-weight: 900;">${eur.format(liquido)}</strong>
+        </div>
+    `;
+    
+    let actionsHTML = `
+        <button type="button" class="btn btn-outline" style="width: 100%; margin-top: 1.5rem;" onclick="document.getElementById('sim-results').style.display='none'; document.getElementById('sim-form-container').style.display='block';">Ajustar parámetros</button>
+    `;
+    
+    // Ordered as requested: Resultado, Devengos, Retenciones, Bases
+    elements.simResults.innerHTML = liquidoHTML + devengosHTML + deduccionesHTML + basesHTML + actionsHTML;
+    
+    // Hide form and show results
+    document.getElementById('sim-form-container').style.display = 'none';
+    elements.simResults.style.display = 'block';
+    
+    elements.simResults.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 // Override native alert with custom modal

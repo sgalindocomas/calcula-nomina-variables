@@ -442,7 +442,7 @@ input:focus, select:focus {
 
 /* Modal Overlay */
 .modal-overlay {
-    position: absolute;
+    position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
     background: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(5px);
