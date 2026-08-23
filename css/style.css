@@ -269,6 +269,28 @@ input:focus, select:focus {
     border-color: var(--color-text);
 }
 
+.btn-info-icon {
+    background-color: var(--color-border);
+    color: var(--color-text-muted);
+    border: none;
+    border-radius: var(--radius-full);
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    flex-shrink: 0;
+}
+
+.btn-info-icon:hover {
+    background-color: var(--color-text-muted);
+    color: white;
+}
+
 .stepper-actions {
     display: flex;
     justify-content: space-between;
@@ -564,3 +586,11 @@ input:focus, select:focus {
     opacity: 0.6;
     margin-top: 1.5rem;
 }
+
+/* Mobile vertical adjustments for calendar */
+@media (max-width: 600px) and (orientation: portrait) {
+    .calendar-day {
+        aspect-ratio: 1 / 1.35;
+    }
+}
+

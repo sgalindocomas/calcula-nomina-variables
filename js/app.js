@@ -852,5 +852,39 @@ function generateInfoText() {
     elements.infoText.value = text.trim();
 }
 
+// Override native alert with custom modal
+(function() {
+    const originalAlert = window.alert;
+    window.alert = function(message) {
+        const modal = document.getElementById('custom-alert-modal');
+        const msgEl = document.getElementById('custom-alert-message');
+        if (modal && msgEl) {
+            msgEl.textContent = message;
+            modal.classList.add('open');
+        } else {
+            originalAlert(message);
+        }
+    };
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        const modal = document.getElementById('custom-alert-modal');
+        const closeBtn = document.getElementById('btn-custom-alert-close');
+        
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                modal.classList.remove('open');
+            });
+        }
+        
+        if (modal) {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('open');
+                }
+            });
+        }
+    });
+})();
+
 // Bootstrap
 document.addEventListener('DOMContentLoaded', init);

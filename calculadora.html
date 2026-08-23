@@ -131,9 +131,21 @@
                     <!-- Injected via JS -->
                 </div>
                 
-                <div id="action-buttons-container" style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
-                    <button type="button" id="btn-open-claim" class="btn btn-outline" style="font-size: 0.85rem;">Generar Reclamación</button>
-                    <button type="button" id="btn-open-info" class="btn btn-primary" style="font-size: 0.85rem;">Generar Información</button>
+                <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-top: 2rem;">
+                    <div id="action-buttons-container" style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; align-items: center;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <button type="button" id="btn-open-claim" class="btn btn-outline" style="font-size: 0.85rem;">Generar Reclamación</button>
+                            <button type="button" class="btn-info-icon" onclick="alert('Generar reclamación te permite introducir lo que te han pagado realmente en la nómina para compararlo con lo calculado, y así generar un texto listo para reclamar las diferencias.')" aria-label="Información sobre Generar Reclamación">?</button>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <button type="button" id="btn-open-info" class="btn btn-outline" style="font-size: 0.85rem;">Generar Información</button>
+                            <button type="button" class="btn-info-icon" onclick="alert('Generar información te sirve para generar un texto donde se explica qué días has trabajado y qué variables has generado en el periodo seleccionado.')" aria-label="Información sobre Generar Información">?</button>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: center;">
+                        <button type="button" id="btn-simulate-payroll" class="btn btn-primary" style="font-size: 1rem; width: 100%; max-width: 300px;">Simular Nómina</button>
+                    </div>
                 </div>
                 
                 <div id="info-section" style="display: none; background: var(--color-surface); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--color-border); margin-top: 1rem;">
@@ -277,6 +289,15 @@
 
     <!-- Toast Notification -->
     <div id="toast-notification" class="toast">Texto copiado al portapapeles</div>
+
+    <!-- Custom Alert Modal -->
+    <div class="modal-overlay" id="custom-alert-modal" style="z-index: 9999;">
+        <div class="modal-content" style="max-width: 350px; text-align: center; padding: 2rem 1.5rem;">
+            <h3 style="margin-bottom: 1rem; color:var(--color-primary); font-size: 1.25rem;">Aviso</h3>
+            <p id="custom-alert-message" style="margin-bottom: 1.5rem; font-size: 0.95rem; color: var(--color-text); line-height: 1.4;"></p>
+            <button type="button" id="btn-custom-alert-close" class="btn btn-primary" style="width: 100%; font-size: 1rem;">Entendido</button>
+        </div>
+    </div>
 
     <!-- Application Logic -->
     <script src="./js/data.js"></script>
