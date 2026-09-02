@@ -213,6 +213,16 @@ const elements = {
     claimAbonadoFEspecial: document.getElementById('claim-abonado-fespecial'),
     claimAbonadoFEstatal: document.getElementById('claim-abonado-festatal'),
     claimAbonadoDietas: document.getElementById('claim-abonado-dietas'),
+    claimHasOwed: document.getElementById('claim-has-owed'),
+    claimOwedSection: document.getElementById('claim-owed-section'),
+    claimOwedComp: document.getElementById('claim-owed-comp'),
+    claimOwedProlong: document.getElementById('claim-owed-prolong'),
+    claimOwedNight: document.getElementById('claim-owed-night'),
+    claimOwedSunday: document.getElementById('claim-owed-sunday'),
+    claimOwedFLocal: document.getElementById('claim-owed-flocal'),
+    claimOwedFEspecial: document.getElementById('claim-owed-fespecial'),
+    claimOwedFEstatal: document.getElementById('claim-owed-festatal'),
+    claimOwedDietas: document.getElementById('claim-owed-dietas'),
     btnGenerateClaim: document.getElementById('btn-generate-claim'),
     btnCopyClaim: document.getElementById('btn-copy-claim'),
     claimText: document.getElementById('claim-text'),
@@ -301,6 +311,10 @@ function setupEventListeners() {
         // Clear text inside when re-opened just in case
         elements.claimText.value = '';
         elements.btnCopyClaim.style.display = 'none';
+    });
+
+    elements.claimHasOwed.addEventListener('change', (e) => {
+        elements.claimOwedSection.style.display = e.target.checked ? 'block' : 'none';
     });
 
     elements.btnOpenInfo.addEventListener('click', () => {
@@ -772,6 +786,27 @@ function generateClaimText() {
     if (totals.prolongation_mins > 0) genArr.push(`${fmt(totals.prolongation_mins)} minutos de prolongación`);
     if (totals.diets > 0) genArr.push(`${fmt(totals.diets)} dietas`);
     
+    const hasOwed = elements.claimHasOwed.checked;
+    
+    const owedComp = hasOwed ? (parseFloat(elements.claimOwedComp.value) || 0) : 0;
+    const owedProlong = hasOwed ? (parseFloat(elements.claimOwedProlong.value) || 0) : 0;
+    const owedNight = hasOwed ? (parseFloat(elements.claimOwedNight.value) || 0) : 0;
+    const owedSunday = hasOwed ? (parseFloat(elements.claimOwedSunday.value) || 0) : 0;
+    const owedFLocal = hasOwed ? (parseFloat(elements.claimOwedFLocal.value) || 0) : 0;
+    const owedFEspecial = hasOwed ? (parseFloat(elements.claimOwedFEspecial.value) || 0) : 0;
+    const owedFEstatal = hasOwed ? (parseFloat(elements.claimOwedFEstatal.value) || 0) : 0;
+    const owedDietas = hasOwed ? (parseFloat(elements.claimOwedDietas.value) || 0) : 0;
+
+    let owedArr = [];
+    if (owedComp > 0) owedArr.push(`${fmt(owedComp)} horas complementarias`);
+    if (owedNight > 0) owedArr.push(`${fmt(owedNight)} h nocturnidad`);
+    if (owedSunday > 0) owedArr.push(`${fmt(owedSunday)} horas de domingos`);
+    if (owedFLocal > 0) owedArr.push(`${fmt(owedFLocal)} horas de festivos locales`);
+    if (owedFEspecial > 0) owedArr.push(`${fmt(owedFEspecial)} horas de festivos especiales`);
+    if (owedFEstatal > 0) owedArr.push(`${fmt(owedFEstatal)} horas de festivos no locales`);
+    if (owedProlong > 0) owedArr.push(`${fmt(owedProlong)} minutos de prolongación`);
+    if (owedDietas > 0) owedArr.push(`${fmt(owedDietas)} dietas`);
+
     const abonadoComp = parseFloat(elements.claimAbonadoComp.value) || 0;
     const abonadoProlong = parseFloat(elements.claimAbonadoProlong.value) || 0;
     const abonadoNight = parseFloat(elements.claimAbonadoNight.value) || 0;
@@ -791,6 +826,44 @@ function generateClaimText() {
     if (abonadoProlong > 0) abnArr.push(`${fmt(abonadoProlong)} minutos de prolongación`);
     if (abonadoDietas > 0) abnArr.push(`${fmt(abonadoDietas)} dietas`);
     
+    const sumComp = (totals.comp_hours || 0) + owedComp;
+    const sumNight = (totals.night_hours || 0) + owedNight;
+    const sumSunday = (totals.sunday_hours || 0) + owedSunday;
+    const sumFLocal = (totals.f_local_hours || 0) + owedFLocal;
+    const sumFEspecial = (totals.f_especial_hours || 0) + owedFEspecial;
+    const sumFEstatal = (totals.f_no_local_hours || 0) + owedFEstatal;
+    const sumProlong = (totals.prolongation_mins || 0) + owedProlong;
+    const sumDietas = (totals.diets || 0) + owedDietas;
+
+    let sumArr = [];
+    if (sumComp > 0) sumArr.push(`${fmt(sumComp)} horas complementarias`);
+    if (sumNight > 0) sumArr.push(`${fmt(sumNight)} h nocturnidad`);
+    if (sumSunday > 0) sumArr.push(`${fmt(sumSunday)} horas de domingos`);
+    if (sumFLocal > 0) sumArr.push(`${fmt(sumFLocal)} horas de festivos locales`);
+    if (sumFEspecial > 0) sumArr.push(`${fmt(sumFEspecial)} horas de festivos especiales`);
+    if (sumFEstatal > 0) sumArr.push(`${fmt(sumFEstatal)} horas de festivos no locales`);
+    if (sumProlong > 0) sumArr.push(`${fmt(sumProlong)} minutos de prolongación`);
+    if (sumDietas > 0) sumArr.push(`${fmt(sumDietas)} dietas`);
+
+    const claimComp = Math.max(0, sumComp - abonadoComp);
+    const claimNight = Math.max(0, sumNight - abonadoNight);
+    const claimSunday = Math.max(0, sumSunday - abonadoSunday);
+    const claimFLocal = Math.max(0, sumFLocal - abonadoFLocal);
+    const claimFEspecial = Math.max(0, sumFEspecial - abonadoFEspecial);
+    const claimFEstatal = Math.max(0, sumFEstatal - abonadoFEstatal);
+    const claimProlong = Math.max(0, sumProlong - abonadoProlong);
+    const claimDietas = Math.max(0, sumDietas - abonadoDietas);
+    
+    let recArr = [];
+    if (claimComp > 0) recArr.push(`${fmt(claimComp)} horas complementarias`);
+    if (claimNight > 0) recArr.push(`${fmt(claimNight)} h nocturnidad`);
+    if (claimSunday > 0) recArr.push(`${fmt(claimSunday)} horas de domingos`);
+    if (claimFLocal > 0) recArr.push(`${fmt(claimFLocal)} horas de festivos locales`);
+    if (claimFEspecial > 0) recArr.push(`${fmt(claimFEspecial)} horas de festivos especiales`);
+    if (claimFEstatal > 0) recArr.push(`${fmt(claimFEstatal)} horas de festivos no locales`);
+    if (claimProlong > 0) recArr.push(`${fmt(claimProlong)} minutos de prolongación`);
+    if (claimDietas > 0) recArr.push(`${fmt(claimDietas)} dietas`);
+
     let text = `Hola, no he cobrado de forma correcta las variables de la nómina de ${mesTexto}.\n\n`;
     
     if (ordText.length > 0) {
@@ -805,12 +878,25 @@ function generateClaimText() {
     
     if (genArr.length > 0) {
         text += `Generando: ${genArr.join(', ')}.\n\n`;
+    } else {
+        text += `Generando: ningún concepto.\n\n`;
+    }
+    
+    if (hasOwed && owedArr.length > 0) {
+        text += `Se me debe de nominas anteriores: ${owedArr.join(', ')}.\n\n`;
+        text += `Sumando un total de: ${sumArr.join(', ')}.\n\n`;
     }
     
     if (abnArr.length > 0) {
-        text += `Y solo se me han abonado: ${abnArr.join(', ')}.`;
+        text += `Y solo se me han abonado: ${abnArr.join(', ')}.\n\n`;
     } else {
-        text += `Y no se me ha abonado ningún concepto variable.`;
+        text += `Y no se me ha abonado ningún concepto variable.\n\n`;
+    }
+
+    if (recArr.length > 0) {
+        text += `Por lo tanto, RECLAMO: ${recArr.join(', ')}.`;
+    } else {
+        text += `Por lo tanto, no reclamo ningún concepto variable.`;
     }
     
     elements.claimText.value = text.trim();
