@@ -422,8 +422,32 @@ input:focus, select:focus {
 .result-row {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 0.75rem 0;
     border-bottom: 1px dashed var(--color-border);
+}
+
+.result-row > span {
+    display: flex;
+    flex-direction: column;
+}
+
+.result-breakdown {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    font-weight: normal;
+    margin-top: 0.15rem;
+}
+
+@media (min-width: 481px) {
+    .result-row > span {
+        flex-direction: row;
+        align-items: baseline;
+    }
+    .result-breakdown {
+        margin-top: 0;
+        margin-left: 0.5rem;
+    }
 }
 
 .result-row:last-child {

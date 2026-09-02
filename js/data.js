@@ -3,7 +3,7 @@ const data = {
         plus_asistencia_puntualidad: 126.40,
         precio_nocturnidad: 0.83,
         precio_domingo: 0.61,
-        precio_festivo_local: 3.11, //pendiente ajuste
+        precio_festivo_local: 2.49,
         precio_festivo_no_local: 3.11,
         precio_festivo_especial: 6.24,
         precio_dieta: 12.47 

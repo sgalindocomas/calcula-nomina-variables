@@ -332,14 +332,9 @@ function setupEventListeners() {
         });
     });
 
-    let simulateClicks = 0;
     elements.btnSimulatePayroll.addEventListener('click', () => {
-        simulateClicks++;
-        if (simulateClicks >= 5) {
-            if (state.currentStep === 4) {
-                goNext();
-            }
-            simulateClicks = 0;
+        if (state.currentStep === 4) {
+            goNext();
         }
     });
     
@@ -543,7 +538,7 @@ function renderCalendar() {
 // --- MODAL (DAY ADJUSTMENTS) ---
 function openDayModal(dateStr, dateObj) {
     currentEditingDate = dateStr;
-    const shift = state.shifts[dateStr] || { type: 'none', unidad: '', time: '07:00', duration: 12, prolongation: 0, diets: 0 };
+    const shift = state.shifts[dateStr] || { type: 'none', unidad: '', time: '07:00', duration: 24, prolongation: 0, diets: 0 };
     
     elements.modalTitle.textContent = dateObj.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' });
     
@@ -675,7 +670,7 @@ function calculateResults() {
     if (totals.comp_hours > 0) {
         html += `
             <div class="result-row">
-                <span>Horas Complementarias (${fmt(totals.comp_hours)} h)</span>
+                <span>Horas Complementarias <span class="result-breakdown">${fmt(totals.comp_hours)} h x ${eur.format(p_hora)}</span></span>
                 <strong>${eur.format(f_comp)}</strong>
             </div>`;
     }
@@ -683,7 +678,7 @@ function calculateResults() {
     if (totals.prolongation_mins > 0) {
         html += `
             <div class="result-row">
-                <span>Prolongación (${fmt(totals.prolongation_mins)} min)</span>
+                <span>Prolongación <span class="result-breakdown">${fmt(prolongation_hours)} h x ${eur.format(p_hora)}</span></span>
                 <strong>${eur.format(f_prolong)}</strong>
             </div>`;
     }
@@ -691,7 +686,7 @@ function calculateResults() {
     if (totals.night_hours > 0) {
         html += `
             <div class="result-row">
-                <span>Nocturnidad (${fmt(totals.night_hours)} h)</span>
+                <span>Nocturnidad <span class="result-breakdown">${fmt(totals.night_hours)} h x ${eur.format(p_nocturnidad)}</span></span>
                 <strong>${eur.format(f_night)}</strong>
             </div>`;
     }
@@ -699,7 +694,7 @@ function calculateResults() {
     if (totals.sunday_hours > 0) {
         html += `
             <div class="result-row">
-                <span>Domingos (${fmt(totals.sunday_hours)} h)</span>
+                <span>Domingos <span class="result-breakdown">${fmt(totals.sunday_hours)} h x ${eur.format(p_domingo)}</span></span>
                 <strong>${eur.format(f_sunday)}</strong>
             </div>`;
     }
@@ -707,19 +702,19 @@ function calculateResults() {
     if (totals.diets > 0) {
         html += `
             <div class="result-row">
-                <span>Dietas (${fmt(totals.diets)} uds)</span>
+                <span>Dietas <span class="result-breakdown">${fmt(totals.diets)} uds x ${eur.format(p_dieta)}</span></span>
                 <strong>${eur.format(f_diets)}</strong>
             </div>`;
     }
     
     if (totals.f_local_hours > 0) {
-        html += `<div class="result-row"><span>Festivo Local (${fmt(totals.f_local_hours)} h)</span><strong>${eur.format(f_flocal)}</strong></div>`;
+        html += `<div class="result-row"><span>Festivo Local <span class="result-breakdown">${fmt(totals.f_local_hours)} h x ${eur.format(prices.local)}</span></span><strong>${eur.format(f_flocal)}</strong></div>`;
     }
     if (totals.f_especial_hours > 0) {
-        html += `<div class="result-row"><span>Festivo Especial (${fmt(totals.f_especial_hours)} h)</span><strong>${eur.format(f_fespecial)}</strong></div>`;
+        html += `<div class="result-row"><span>Festivo Especial <span class="result-breakdown">${fmt(totals.f_especial_hours)} h x ${eur.format(prices.especial)}</span></span><strong>${eur.format(f_fespecial)}</strong></div>`;
     }
     if (totals.f_no_local_hours > 0) {
-        html += `<div class="result-row"><span>Festivo No Local (${fmt(totals.f_no_local_hours)} h)</span><strong>${eur.format(f_fnolocal)}</strong></div>`;
+        html += `<div class="result-row"><span>Festivo No Local <span class="result-breakdown">${fmt(totals.f_no_local_hours)} h x ${eur.format(prices.no_local)}</span></span><strong>${eur.format(f_fnolocal)}</strong></div>`;
     }
     
     if (aCuentaConvenio > 0) {
@@ -987,6 +982,9 @@ function calculatePayrollSimulation() {
     let prolongationSuma = 0;
     let devengosObj = {};
     
+    const eur = new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' });
+    const fmt = num => Number.isInteger(num) ? num : parseFloat(num.toFixed(2));
+    
     if (lastCalculatedTotals) {
         const t = lastCalculatedTotals;
         const p_hora = getPriceHour(state.employee.categoryKey, state.employee.trienio);
@@ -1002,14 +1000,14 @@ function calculatePayrollSimulation() {
         
         prolongationSuma = v_prolong;
         
-        if(v_comp > 0) devengosObj['H. Complementarias'] = v_comp;
-        if(v_prolong > 0) devengosObj['Prolongación Jornada'] = v_prolong;
-        if(v_night > 0) devengosObj['Nocturnidad'] = v_night;
-        if(v_sunday > 0) devengosObj['Domingos'] = v_sunday;
-        if(v_flocal > 0) devengosObj['Festivos Locales'] = v_flocal;
-        if(v_fespecial > 0) devengosObj['Festivos Especiales'] = v_fespecial;
-        if(v_fnolocal > 0) devengosObj['Festivos No Locales'] = v_fnolocal;
-        if(v_diets > 0) devengosObj['Dietas'] = v_diets;
+        if(v_comp > 0) devengosObj['H. Complementarias'] = { val: v_comp, detail: `${fmt(t.comp_hours)} h x ${eur.format(p_hora)}` };
+        if(v_prolong > 0) devengosObj['Prolongación Jornada'] = { val: v_prolong, detail: `${fmt(t.prolongation_mins/60)} h x ${eur.format(p_hora)}` };
+        if(v_night > 0) devengosObj['Nocturnidad'] = { val: v_night, detail: `${fmt(t.night_hours)} h x ${eur.format(data.conceptos_comunes.precio_nocturnidad)}` };
+        if(v_sunday > 0) devengosObj['Domingos'] = { val: v_sunday, detail: `${fmt(t.sunday_hours)} h x ${eur.format(data.conceptos_comunes.precio_domingo)}` };
+        if(v_flocal > 0) devengosObj['Festivos Locales'] = { val: v_flocal, detail: `${fmt(t.f_local_hours)} h x ${eur.format(data.conceptos_comunes.precio_festivo_local)}` };
+        if(v_fespecial > 0) devengosObj['Festivos Especiales'] = { val: v_fespecial, detail: `${fmt(t.f_especial_hours)} h x ${eur.format(data.conceptos_comunes.precio_festivo_especial)}` };
+        if(v_fnolocal > 0) devengosObj['Festivos No Locales'] = { val: v_fnolocal, detail: `${fmt(t.f_no_local_hours)} h x ${eur.format(data.conceptos_comunes.precio_festivo_no_local)}` };
+        if(v_diets > 0) devengosObj['Dietas'] = { val: v_diets, detail: `${fmt(t.diets)} uds x ${eur.format(data.conceptos_comunes.precio_dieta)}` };
         
         variablesSuma = v_comp + v_prolong + v_night + v_sunday + v_flocal + v_fespecial + v_fnolocal + v_diets;
     }
@@ -1025,8 +1023,8 @@ function calculatePayrollSimulation() {
     let totalDevengado = fijosSuma + variablesSuma + aCuentaConvenio;
     
     if (isProrrateada) {
-        devengosObj['PP Verano (Prorrateada)'] = prorrataUnaPaga;
-        devengosObj['PP Invierno (Prorrateada)'] = prorrataUnaPaga;
+        devengosObj['PP Verano (Prorrateada)'] = { val: prorrataUnaPaga, detail: '' };
+        devengosObj['PP Invierno (Prorrateada)'] = { val: prorrataUnaPaga, detail: '' };
         totalDevengado += prorrataMensualPagasExtras;
     }
     
@@ -1046,19 +1044,18 @@ function calculatePayrollSimulation() {
     const liquido = totalDevengado - totalDeducciones;
     
     // --- 7. HTML RENDER ---
-    const eur = new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' });
-    
     let devengosHTML = `
         <div style="background: var(--color-surface); padding: 1rem; border-radius: 6px; border: 1px solid var(--color-border); margin-bottom: 1rem;">
             <h3 style="color: var(--color-primary); font-size: 1.1rem; margin-bottom: 0.5rem; border-bottom: 1px solid var(--color-border); padding-bottom: 0.5rem;">Devengos</h3>
-            <div class="result-row"><span>Salario Base</span><strong>${eur.format(salarioBase)}</strong></div>
-            <div class="result-row"><span>Comp. Formación</span><strong>${eur.format(compFormacion)}</strong></div>
-            <div class="result-row"><span>Antigüedad</span><strong>${eur.format(antiguedad)}</strong></div>
-            <div class="result-row"><span>Plus Asistencia y Punt.</span><strong>${eur.format(plusAsistencia)}</strong></div>
+            <div class="result-row"><span>Salario Base<span class="result-breakdown">30 d x ${eur.format(salarioBase/30)}</span></span><strong>${eur.format(salarioBase)}</strong></div>
+            <div class="result-row"><span>Comp. Formación<span class="result-breakdown">30 d x ${eur.format(compFormacion/30)}</span></span><strong>${eur.format(compFormacion)}</strong></div>
+            <div class="result-row"><span>Antigüedad<span class="result-breakdown">30 d x ${eur.format(antiguedad/30)}</span></span><strong>${eur.format(antiguedad)}</strong></div>
+            <div class="result-row"><span>Plus Asistencia y Punt.<span class="result-breakdown">30 d x ${eur.format(plusAsistencia/30)}</span></span><strong>${eur.format(plusAsistencia)}</strong></div>
     `;
     
-    for (const [name, val] of Object.entries(devengosObj)) {
-        devengosHTML += `<div class="result-row"><span>${name}</span><strong>${eur.format(val)}</strong></div>`;
+    for (const [name, data] of Object.entries(devengosObj)) {
+        const detailHTML = data.detail ? `<span class="result-breakdown">${data.detail}</span>` : '';
+        devengosHTML += `<div class="result-row"><span>${name}${detailHTML}</span><strong>${eur.format(data.val)}</strong></div>`;
     }
     
     devengosHTML += `
@@ -1082,11 +1079,11 @@ function calculatePayrollSimulation() {
     let deduccionesHTML = `
         <div style="background: var(--color-surface); padding: 1rem; border-radius: 6px; border: 1px solid var(--color-border); margin-bottom: 1rem;">
             <h3 style="color: var(--color-text-muted); font-size: 1.1rem; margin-bottom: 0.5rem; border-bottom: 1px solid var(--color-border); padding-bottom: 0.5rem;">Retenciones</h3>
-            <div class="result-row"><span>IRPF (${irpfPercent}%)</span><strong>-${eur.format(dedIRPF)}</strong></div>
-            <div class="result-row"><span>C. Comunes (4.7%)</span><strong>-${eur.format(dedCC)}</strong></div>
-            <div class="result-row"><span>MEI (0.15%)</span><strong>-${eur.format(dedMEI)}</strong></div>
-            <div class="result-row"><span>Formación Prof. (0.10%)</span><strong>-${eur.format(dedFP)}</strong></div>
-            <div class="result-row"><span>Desempleo (1.55%)</span><strong>-${eur.format(dedDesempleo)}</strong></div>
+            <div class="result-row"><span>IRPF (${irpfPercent}%)<span class="result-breakdown">${eur.format(baseIRPF)} x ${irpfPercent}%</span></span><strong>-${eur.format(dedIRPF)}</strong></div>
+            <div class="result-row"><span>C. Comunes (4.7%)<span class="result-breakdown">${eur.format(baseCC)} x 4.7%</span></span><strong>-${eur.format(dedCC)}</strong></div>
+            <div class="result-row"><span>MEI (0.15%)<span class="result-breakdown">${eur.format(baseCC)} x 0.15%</span></span><strong>-${eur.format(dedMEI)}</strong></div>
+            <div class="result-row"><span>Formación Prof. (0.10%)<span class="result-breakdown">${eur.format(baseAT)} x 0.10%</span></span><strong>-${eur.format(dedFP)}</strong></div>
+            <div class="result-row"><span>Desempleo (1.55%)<span class="result-breakdown">${eur.format(baseAT)} x 1.55%</span></span><strong>-${eur.format(dedDesempleo)}</strong></div>
             <div class="result-row" style="border-top: 2px solid var(--color-border); margin-top: 0.5rem; padding-top: 0.5rem;">
                 <span style="font-weight: 700;">TOTAL DEDUCCIONES</span><strong>-${eur.format(totalDeducciones)}</strong>
             </div>
