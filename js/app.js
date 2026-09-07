@@ -634,7 +634,7 @@ function calculateResults() {
     }
     
     const p_hora = getPriceHour(state.employee.categoryKey, state.employee.trienio);
-    const p_nocturnidad = data.conceptos_comunes.precio_nocturnidad;
+    const p_nocturnidad = getCategoryData(state.employee.categoryKey).precio_nocturnidad;
     const p_domingo = data.conceptos_comunes.precio_domingo;
     const p_dieta = data.conceptos_comunes.precio_dieta;
     
@@ -991,7 +991,7 @@ function calculatePayrollSimulation() {
         
         const v_comp = t.comp_hours * p_hora;
         const v_prolong = (t.prolongation_mins / 60) * p_hora;
-        const v_night = t.night_hours * data.conceptos_comunes.precio_nocturnidad;
+        const v_night = t.night_hours * catData.precio_nocturnidad;
         const v_sunday = t.sunday_hours * data.conceptos_comunes.precio_domingo;
         const v_flocal = t.f_local_hours * data.conceptos_comunes.precio_festivo_local;
         const v_fespecial = t.f_especial_hours * data.conceptos_comunes.precio_festivo_especial;
@@ -1002,7 +1002,7 @@ function calculatePayrollSimulation() {
         
         if(v_comp > 0) devengosObj['H. Complementarias'] = { val: v_comp, detail: `${fmt(t.comp_hours)} h x ${eur.format(p_hora)}` };
         if(v_prolong > 0) devengosObj['Prolongación Jornada'] = { val: v_prolong, detail: `${fmt(t.prolongation_mins/60)} h x ${eur.format(p_hora)}` };
-        if(v_night > 0) devengosObj['Nocturnidad'] = { val: v_night, detail: `${fmt(t.night_hours)} h x ${eur.format(data.conceptos_comunes.precio_nocturnidad)}` };
+        if(v_night > 0) devengosObj['Nocturnidad'] = { val: v_night, detail: `${fmt(t.night_hours)} h x ${eur.format(catData.precio_nocturnidad)}` };
         if(v_sunday > 0) devengosObj['Domingos'] = { val: v_sunday, detail: `${fmt(t.sunday_hours)} h x ${eur.format(data.conceptos_comunes.precio_domingo)}` };
         if(v_flocal > 0) devengosObj['Festivos Locales'] = { val: v_flocal, detail: `${fmt(t.f_local_hours)} h x ${eur.format(data.conceptos_comunes.precio_festivo_local)}` };
         if(v_fespecial > 0) devengosObj['Festivos Especiales'] = { val: v_fespecial, detail: `${fmt(t.f_especial_hours)} h x ${eur.format(data.conceptos_comunes.precio_festivo_especial)}` };

@@ -618,3 +618,14 @@ input:focus, select:focus {
     }
 }
 
+/* View Transitions */
+@view-transition {
+    navigation: auto;
+}
+.vt-header-title {
+    view-transition-name: header-title;
+}
+
+.vt-header-logo {
+    view-transition-name: header-logo;
+}
