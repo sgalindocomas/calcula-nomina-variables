@@ -239,6 +239,25 @@ const elements = {
 let currentEditingDate = null;
 let lastCalculatedTotals = null;
 
+function trackUmamiEvent(eventName) {
+    if (window.umami) {
+        let turno = "Desconocido";
+        for (const key in state.shifts) {
+            if (state.shifts[key].unidad) {
+                turno = state.shifts[key].unidad;
+                break;
+            }
+        }
+        
+        umami.track(eventName, {
+            categoria: state.employee.categoryKey || 'No seleccionada',
+            antiguedad: state.employee.trienio || 'No seleccionada',
+            horas_complementarias: lastCalculatedTotals ? lastCalculatedTotals.comp_hours : 0,
+            turno: turno
+        });
+    }
+}
+
 // --- INITIALIZATION ---
 function init() {
     populateCategories();
@@ -742,6 +761,7 @@ function calculateResults() {
 
 function generateClaimText() {
     if (!lastCalculatedTotals) return;
+    trackUmamiEvent('Generar Reclamacion');
     
     const sortedDates = Object.keys(state.shifts).sort();
     const monthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
@@ -900,6 +920,7 @@ function generateClaimText() {
 
 function generateInfoText() {
     if (!lastCalculatedTotals) return;
+    trackUmamiEvent('Generar Informacion');
     
     const sortedDates = Object.keys(state.shifts).sort();
     const monthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
@@ -959,6 +980,7 @@ function generateInfoText() {
 }
 
 function calculatePayrollSimulation() {
+    trackUmamiEvent('Simular Nomina');
     const irpfPercent = parseFloat(elements.simIrpf.value) || 0;
     const isProrrateada = elements.simPagasExtra.checked;
     

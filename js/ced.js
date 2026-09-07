@@ -76,6 +76,10 @@ function initCED() {
 }
 
 function calculateCED() {
+    if (window.umami) {
+        umami.track('Calcular CED');
+    }
+
     const resultsDetails = document.getElementById('results-details');
     const resultTotal = document.getElementById('result-total');
     const resultNote = document.getElementById('result-note');
