@@ -7,135 +7,31 @@
     <meta name="title" content="Calculadora CED - CCOO Catalunya">
     <meta name="description" content="Calculadora CED para profesionales del sector de ambulancias.">
     <link rel="icon" type="image/x-icon" href="./favicon.ico">
+    <!-- Analytics -->
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="db85962b-2444-40af-bfe7-c813cc7b9e3b"></script>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
     <!-- Main Styles -->
     <link rel="stylesheet" href="./css/style.css">
-    <style>
-        .month-details {
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-md);
-            margin-bottom: 1rem;
-            overflow: hidden;
-            transition: var(--transition-normal);
-        }
-        
-        .month-details summary {
-            padding: 1rem 1.5rem;
-            font-weight: 700;
-            color: var(--color-primary);
-            cursor: pointer;
-            list-style: none;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--color-surface);
-        }
-        
-        .month-details summary::-webkit-details-marker {
-            display: none;
-        }
-        
-        .month-details summary::after {
-            content: '+';
-            font-size: 1.5rem;
-            line-height: 1;
-            transition: transform 0.3s ease;
-        }
-        
-        .month-details[open] summary::after {
-            transform: rotate(45deg);
-        }
-        
-        .month-details[open] {
-            border-color: var(--color-primary-light);
-            box-shadow: var(--shadow-sm);
-        }
-        
-        .month-content {
-            padding: 1rem 1.5rem;
-            border-top: 1px solid var(--color-border);
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 1rem;
-        }
 
-        .input-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .input-group label {
-            font-size: 0.75rem;
-            margin-bottom: 0.25rem;
-            color: var(--color-text-muted);
-        }
-
-        .input-group input {
-            padding: 0.5rem;
-            font-size: 0.9rem;
-        }
-        
-        .results-box {
-            background: var(--color-surface);
-            border: 2px solid var(--color-primary-light);
-            border-radius: var(--radius-md);
-            padding: 1.5rem;
-            margin-top: 2rem;
-            display: none;
-            animation: fadeIn 0.4s ease-in-out;
-        }
-        
-        .result-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 0.5rem 0;
-            border-bottom: 1px dashed var(--color-border);
-            font-size: 0.9rem;
-        }
-        
-        .result-item.rejected {
-            color: var(--color-text-muted);
-            text-decoration: line-through;
-            opacity: 0.6;
-        }
-        
-        .result-total-ced {
-            font-size: 1.8rem;
-            font-weight: 900;
-            color: var(--color-primary);
-            text-align: center;
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 2px solid var(--color-primary-light);
-        }
-        
-        .result-note {
-            font-size: 0.8rem;
-            text-align: center;
-            color: var(--color-text-muted);
-            margin-top: 0.5rem;
-        }
-    </style>
 </head>
 <body>
 
-    <div class="app-container shadow-glass" style="max-width: 800px;">
+    <div class="app-container shadow-glass max-w-800">
         <!-- Header -->
-        <header class="header" onclick="window.location.href='./index.html';" style="cursor: pointer;" title="Volver al inicio">
-            <div style="display: flex; align-items: center; justify-content: center; gap: 0.8rem; margin-bottom: 1.5rem;">
-                <span class="vt-header-title" style="font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 800; color: #000;">Agrupació Ambulàncies</span>
-                <img src="./ccoo.png" alt="Logo CCOO Catalunya" class="vt-header-logo" style="height: 35px; margin-bottom: 0;">
+        <header class="header cursor-pointer" onclick="window.location.href='./index.html';" title="Volver al inicio">
+            <div class="flex-center gap-08 mb-15">
+                <span class="vt-header-title font-inter text-base font-800 text-black">Agrupació Ambulàncies</span>
+                <img src="./ccoo.png" alt="Logo CCOO Catalunya" class="vt-header-logo h-35 mb-0">
             </div>
-            <h1 style="font-size: 1.8rem; margin-top: 0;">Calculadora CED</h1>
-            <p style="font-size: 0.9rem;">Complemento Especial de Dedicación</p>
+            <h1 class="text-3xl mt-0">Calculadora CED</h1>
+            <p class="text-base">Complemento Especial de Dedicación</p>
         </header>
 
-        <main style="padding: 2rem;">
-            <div style="background: var(--color-primary-light); border-radius: 8px; padding: 1rem; margin-bottom: 2rem; font-size: 0.85rem; border: 1px solid var(--color-primary);">
+        <main class="p-2">
+            <div class="bg-primary-light rounded-lg p-1 mb-2 text-md border-primary">
                 <strong>Instrucciones:</strong> Introduce en euros (€) el importe cobrado de cada variable en los 12 meses del año anterior (desde enero hasta diciembre). Las variables que no hayas cobrado al menos durante 6 meses serán descartadas (los domingos y festivos se computan de forma conjunta).
             </div>
 
@@ -144,13 +40,13 @@
                     <!-- Injected via JS -->
                 </div>
 
-                <div style="text-align: center; margin-top: 2rem;">
-                    <button type="button" id="btn-calcular" class="btn btn-primary" style="width: 100%; max-width: 300px; font-size: 1.1rem; padding: 1rem;">Calcular CED</button>
+                <div class="text-center mt-2">
+                    <button type="button" id="btn-calcular" class="btn btn-primary w-full max-w-300 text-xl p-1">Calcular CED</button>
                 </div>
             </form>
 
             <div id="results-box" class="results-box">
-                <h3 style="color: var(--color-primary); margin-bottom: 1rem; text-align: center;">Resultados CED</h3>
+                <h3 class="text-primary mb-1 text-center">Resultados CED</h3>
                 <div id="results-details">
                     <!-- Injected via JS -->
                 </div>
@@ -170,7 +66,7 @@
     </div>
 
     <!-- Global Footer -->
-    <footer class="global-footer" onclick="window.location.href='./index.html';" style="cursor: pointer;" title="Volver al inicio">
+    <footer class="global-footer cursor-pointer" onclick="window.location.href='./index.html';" title="Volver al inicio">
         <div class="footer-content">
             <img src="./ccoo.png" alt="Logo CCOO" class="footer-logo">
             <div class="footer-text">

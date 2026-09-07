@@ -7,150 +7,27 @@
     <meta name="title" content="Portal de Herramientas - CCOO">
     <meta name="description" content="Portal de herramientas de CCOO para el cálculo de nóminas y conceptos.">
     <link rel="icon" type="image/x-icon" href="./favicon.ico">
+    <!-- Analytics -->
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="db85962b-2444-40af-bfe7-c813cc7b9e3b"></script> 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
     <!-- Main Styles -->
     <link rel="stylesheet" href="./css/style.css">
-    <style>
-        .tools-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1.5rem;
-            padding: 2rem;
-            background: var(--color-surface);
-            border-bottom: 1px solid var(--color-border);
-        }
-        
-        .tool-card {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            padding: 2.5rem 1.5rem;
-            background: var(--color-bg);
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-md);
-            text-decoration: none;
-            color: var(--color-text);
-            transition: var(--transition-normal);
-        }
-        
-        .tool-card:hover {
-            border-color: var(--color-primary);
-            box-shadow: var(--shadow-md);
-            transform: translateY(-5px);
-        }
-        
-        .tool-card h3 {
-            color: var(--color-primary);
-            margin-bottom: 0.5rem;
-            font-size: 1.2rem;
-        }
-        
-        .tool-card p {
-            font-size: 0.875rem;
-            color: var(--color-text-muted);
-        }
 
-        .tool-icon {
-            font-size: 3rem;
-            margin-bottom: 1.2rem;
-            color: var(--color-primary);
-            background: var(--color-primary-light);
-            width: 80px;
-            height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: var(--transition-normal);
-        }
-
-        .tool-card:hover .tool-icon {
-            transform: scale(1.1);
-        }
-        
-        .future-tool .tool-icon {
-            background: var(--color-border);
-            color: var(--color-text-muted);
-        }
-        
-        .future-tool:hover .tool-icon {
-            transform: none;
-        }
-
-        .affiliation-banner {
-            background: linear-gradient(135deg, var(--color-primary) 0%, #b81d2c 100%);
-            color: white;
-            padding: 2.5rem 2rem;
-            text-align: center;
-            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
-        }
-
-        .affiliation-banner h3 {
-            color: white;
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
-        }
-
-        .affiliation-banner p {
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 1.5rem;
-            font-size: 1rem;
-            max-width: 85%;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .btn-white {
-            background-color: white;
-            color: var(--color-primary);
-            box-shadow: var(--shadow-sm);
-            text-decoration: none;
-            padding: 0.8rem 2.5rem;
-            font-size: 1.1rem;
-            border-radius: var(--radius-full);
-            display: inline-block;
-            font-weight: 800;
-            transition: var(--transition-normal);
-        }
-        
-        .btn-white:hover {
-            background-color: var(--color-bg);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-            transform: translateY(-2px);
-        }
-        
-        .future-tool {
-            opacity: 0.7;
-            cursor: not-allowed;
-            border-style: dashed;
-        }
-        
-        .future-tool:hover {
-            border-color: var(--color-text-muted);
-            box-shadow: none;
-            transform: none;
-        }
-        
-        .future-tool h3 {
-            color: var(--color-text-muted);
-        }
-    </style>
 </head>
 <body>
 
-    <div class="app-container shadow-glass" style="max-width: 800px;">
+    <div class="app-container shadow-glass max-w-800">
         <!-- Header -->
         <header class="header">
-            <div style="display: flex; align-items: center; justify-content: center; gap: 0.8rem; margin-bottom: 1.5rem;">
-                <span class="vt-header-title" style="font-family: 'Inter', sans-serif; font-size: 1.5rem; font-weight: 800; color: #000;">Agrupació Ambulàncies</span>
-                <img src="./ccoo.png" alt="Logo CCOO Catalunya" class="vt-header-logo" style="height: 45px; margin-bottom: 0;">
+            <div class="flex-center gap-08 mb-15">
+                <span class="vt-header-title font-inter text-2xl font-800 text-black">Agrupació Ambulàncies</span>
+                <img src="./ccoo.png" alt="Logo CCOO Catalunya" class="vt-header-logo h-45 mb-0">
             </div>
-            <h1 style="font-size: 2.2rem; margin-top: 0;">Portal de Herramientas</h1>
-            <p style="font-size: 1.1rem; margin-top: 0.5rem;">Selecciona la herramienta que necesitas utilizar</p>
+            <h1 class="text-4xl mt-0">Portal de Herramientas</h1>
+            <p class="text-xl mt-05">Selecciona la herramienta que necesitas utilizar</p>
         </header>
 
         <!-- Tools Grid -->
