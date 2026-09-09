@@ -1,4 +1,5 @@
 const data = {
+    minimo_ced: 215.01,
     conceptos_comunes: { 
         plus_asistencia_puntualidad: 126.40,
         precio_domingo: 0.61,

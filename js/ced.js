@@ -25,9 +25,6 @@ const MONTHS = [
     'Noviembre',
     'Diciembre'
 ];
-
-const MINIMO_CED = 219.31;
-
 function initCED() {
     const container = document.getElementById('months-container');
     const btnCalcular = document.getElementById('btn-calcular');
@@ -92,7 +89,8 @@ function calculateCED() {
     const calcGroups = [
         { label: 'H. Complementarias', ids: ['comp'] },
         { label: 'Nocturnidad', ids: ['night'] },
-        { label: 'Domingos y Festivos', ids: ['sunday', 'flocal', 'fespecial', 'fnolocal'] },
+        { label: 'Domingos', ids: ['sunday'] },
+        { label: 'Festivos', ids: ['flocal', 'fespecial', 'fnolocal'] },
         { label: 'Prolongación', ids: ['prolong'] },
         { label: 'Dietas', ids: ['dietas'] }
     ];
@@ -118,7 +116,7 @@ function calculateCED() {
             }
         }
         
-        const avg = sum / 12;
+        const avg = sum / 11;
         
         const itemDiv = document.createElement('div');
         itemDiv.className = 'result-item';
@@ -144,8 +142,10 @@ function calculateCED() {
     let finalAmount = sumOfAverages;
     let noteText = '';
     
-    if (sumOfAverages < MINIMO_CED) {
-        finalAmount = MINIMO_CED;
+    const minimoCed = typeof data !== 'undefined' && data.minimo_ced ? data.minimo_ced : 215.01;
+    
+    if (sumOfAverages < minimoCed) {
+        finalAmount = minimoCed;
         noteText = `La suma de las medias (${sumOfAverages.toFixed(2)} €) es inferior al mínimo estipulado. Se abona el importe mínimo.`;
     } else {
         noteText = `La suma de las medias supera el mínimo estipulado. Se abona la cantidad sumada.`;

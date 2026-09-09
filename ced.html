@@ -26,13 +26,14 @@
                 <span class="vt-header-title font-inter text-base font-800 text-black">Agrupació Ambulàncies</span>
                 <img src="./ccoo.png" alt="Logo CCOO Catalunya" class="vt-header-logo h-35 mb-0">
             </div>
-            <h1 class="text-3xl mt-0">Calculadora CED</h1>
-            <p class="text-base">Complemento Especial de Dedicación</p>
+            <h1 class="text-3xl mt-0 mb-05">Calculadora CED</h1>
+            <p class="text-base mt-0 mb-0">Complemento Especial de Dedicación</p>
+            <p class="text-base mt-0 mb-0">Paga de Vacaciones</p>
         </header>
 
         <main class="p-2">
             <div class="bg-primary-light rounded-lg p-1 mb-2 text-md border-primary">
-                <strong>Instrucciones:</strong> Introduce en euros (€) el importe cobrado de cada variable en los 12 meses del año anterior (desde enero hasta diciembre). Las variables que no hayas cobrado al menos durante 6 meses serán descartadas (los domingos y festivos se computan de forma conjunta).
+                <strong>Instrucciones:</strong> Introduce en euros (€) el importe cobrado de cada variable en los 12 meses del año anterior (desde enero hasta diciembre). Las variables que no hayas cobrado al menos durante 6 meses serán descartadas (los festivos se computan de forma conjunta).
             </div>
 
             <form id="ced-form">
@@ -80,6 +81,7 @@
     </footer>
 
     <!-- Logic -->
+    <script src="./js/data.js"></script>
     <script src="./js/ced.js"></script>
 </body>
 </html>
