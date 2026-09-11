@@ -53,6 +53,14 @@ body {
     padding: 2rem 1rem;
 }
 
+#app {
+    width: 100%;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 /* Typography */
 h1, h2, h3 {
     font-weight: 800;
@@ -68,6 +76,7 @@ p { color: var(--color-text-muted); }
 /* Layout Shell */
 .app-container {
     width: 100%;
+    min-width: 0;
     max-width: 600px;
     background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(10px);
@@ -172,11 +181,15 @@ p { color: var(--color-text-muted); }
     padding: 2rem;
     background: var(--color-surface);
     min-height: 350px;
+    min-width: 0;
+    width: 100%;
 }
 
 .step-pane {
     display: none;
     animation: fadeIn 0.4s ease-in-out forwards;
+    width: 100%;
+    min-width: 0;
 }
 
 .step-pane.active {
@@ -515,7 +528,7 @@ input:focus, select:focus {
 /* Toast Notification */
 .toast {
     position: fixed;
-    top: -50px;
+    top: 20px;
     left: 50%;
     transform: translateX(-50%);
     background: var(--color-success);
@@ -525,15 +538,9 @@ input:focus, select:focus {
     font-weight: 600;
     font-size: 0.85rem;
     box-shadow: var(--shadow-md);
-    transition: var(--transition-normal);
-    z-index: 1000;
-    opacity: 0;
+    z-index: 99999;
+    text-align: center;
     pointer-events: none;
-}
-
-.toast.show {
-    top: 20px;
-    opacity: 1;
 }
 
 /* Affiliation Banner */
@@ -613,6 +620,17 @@ input:focus, select:focus {
 
 /* Mobile vertical adjustments for calendar */
 @media (max-width: 600px) and (orientation: portrait) {
+    .calendar-container {
+        display: block;
+        width: 100%;
+        max-width: 100vw;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 0.5rem;
+    }
+    .calendar-grid {
+        min-width: 480px; /* Force it to be wide enough to show units */
+    }
     .calendar-day {
         aspect-ratio: 1 / 1.35;
     }
@@ -667,7 +685,7 @@ input:focus, select:focus {
 .result-note { font-size: 0.8rem; text-align: center; color: var(--color-text-muted); margin-top: 0.5rem; }
 
 /* --- REFACTORED INLINE STYLES (UTILITIES) --- */
-.max-w-800 { max-width: 800px; margin: 0 auto; }
+.max-w-800 { max-width: 800px !important; margin: 0 auto; }
 .max-w-300 { max-width: 300px; }
 .w-full { width: 100%; }
 
@@ -748,3 +766,7 @@ input:focus, select:focus {
 .border-festivo-local { border: 2px solid var(--color-festivo-local); }
 .border-festivo-especial { border: 2px solid var(--color-festivo-especial); }
 .border-festivo-nolocal { border: 2px solid var(--color-festivo-nolocal); }
+
+.bg-success-light { background: hsl(142, 71%, 95%); }
+.border-success { border: 1px solid var(--color-success); }
+.text-success { color: var(--color-success); }

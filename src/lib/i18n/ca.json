@@ -1,0 +1,260 @@
+{
+  "common": {
+    "title": "Agrupació Ambulàncies",
+    "subtitle": "CCOO - Federació de Serveis a la Ciutadania",
+    "created_by": "Creat per Salva Galindo",
+    "back_home": "Tornar a l'inici",
+    "affiliation": {
+      "title": "Fes-te fort, afilia't a CCOO!",
+      "text": "Junts i juntes som més forts. Uneix-te al sindicat per defensar els teus drets i aconseguir millores laborals al nostre sector.",
+      "btn": "Afilia't Ara"
+    },
+    "months": {
+      "1": "Gener", "2": "Febrer", "3": "Març", "4": "Abril", "5": "Maig", "6": "Juny",
+      "7": "Juliol", "8": "Agost", "9": "Setembre", "10": "Octubre", "11": "Novembre", "12": "Desembre"
+    },
+    "months_short": {
+      "1": "Gen", "2": "Feb", "3": "Mar", "4": "Abr", "5": "Mai", "6": "Jun",
+      "7": "Jul", "8": "Ago", "9": "Set", "10": "Oct", "11": "Nov", "12": "Des"
+    },
+    "days": ["Dl", "Dt", "Dc", "Dj", "Dv", "Ds", "Dg"]
+  },
+  "home": {
+    "title": "Portal d'Eines",
+    "subtitle": "Selecciona l'eina que necessites utilitzar",
+    "calc_title": "Calculadora de Variables",
+    "calc_desc": "Calcula les teves variables de nòmina de forma ràpida i senzilla.",
+    "ced_title": "Calculadora CED",
+    "ced_desc": "Complement Especial de Dedicació (Paga de Vacances).",
+    "future_title": "Properament",
+    "future_desc": "Noves eines en desenvolupament per facilitar-te el dia a dia."
+  },
+  "calc": {
+    "header": {
+      "title": "Càlcul de Variables",
+      "subtitle": "Calculadora de nòmina"
+    },
+    "steps": {
+      "1": "Dades",
+      "2": "Període",
+      "3": "Torns",
+      "4": "Variables",
+      "5": "Nòmina"
+    },
+    "categories": {
+      "tes_conductor": "TES Conductor",
+      "tes_ayudante": "TES Ajudant",
+      "tes_portalliteras": "TES Portalliteres"
+    },
+    "nav": {
+      "back": "Enrere",
+      "next": "Següent",
+      "finish": "Finalitzar"
+    },
+    "step1": {
+      "title": "1. Dades de l'Empleat",
+      "desc": "Selecciona la teva categoria i antiguitat per aplicar els preus correctes del conveni.",
+      "cat_label": "Categoria Professional",
+      "cat_placeholder": "Selecciona una categoria...",
+      "sen_label": "Antiguitat (Triennis)",
+      "sen_placeholder": "Selecciona triennis...",
+      "alert_missing": "Si us plau, selecciona una categoria i antiguitat."
+    },
+    "step2": {
+      "title": "2. Període de Liquidació",
+      "desc": "El cicle de càlcul abasta des del dia 16 del mes anterior al dia 15 del mes seleccionat.",
+      "month_label": "Mes de la nòmina",
+      "info": "El cicle abastarà del <br> <span>{start}</span> al <span>{end}</span>",
+      "alert_missing": "Si us plau, selecciona un mes."
+    },
+    "step3": {
+      "title": "3. Calendari de Torns",
+      "desc": "Omple les dades i activa el \"Mode Pintar\" per assignar torns múltiples tocant els dies. Desactiva'l per editar les dietes o prolongacions d'un dia concret.",
+      "unit_label": "Unitat (Obligatori)",
+      "unit_placeholder": "Unitat (Obligatori)",
+      "time_label": "Entrada",
+      "duration_label": "Hores",
+      "paint_mode": "Mode Pintar (Tocar per assignar)",
+      "alert_unit": "Has d'introduir el nom de la Unitat abans de pintar el torn.",
+      "legend_ord": "Jornada",
+      "legend_comp": "Complementària",
+      "legend_flocal": "Festiu Local",
+      "legend_fespec": "Festiu Especial",
+      "legend_fnolocal": "Festiu No Local",
+      "btn_clear": "Netejar Calendari"
+    },
+    "modal": {
+      "is_local_holiday": "És Festiu Local",
+      "shift_type": "Tipus de Jornada",
+      "shift_none": "Descans / Sense Torn",
+      "shift_ord": "Jornada Ordinària",
+      "shift_comp": "Jornada Complementària (Extra)",
+      "unit": "Unitat",
+      "unit_placeholder": "Obligatori per guardar torn",
+      "time": "Entrada",
+      "duration": "Hores",
+      "prolongation": "Prolongació (Minuts Extra)",
+      "diets": "Dietes",
+      "diet_0": "0 Dietes",
+      "diet_1": "1 Dieta",
+      "diet_2": "2 Dietes",
+      "alert_unit": "El camp Unitat és obligatori per guardar un torn.",
+      "btn_cancel": "Cancel·lar",
+      "btn_save": "Guardar"
+    },
+    "step4": {
+      "title": "4. Variables",
+      "breakdown": "Desglossament de Conceptes",
+      "comp_hours": "Hores Complementàries",
+      "prolongation": "Prolongació",
+      "night_hours": "Nocturnitat",
+      "sunday_hours": "Diumenges",
+      "diets": "Dietes",
+      "flocal": "Festiu Local",
+      "fespecial": "Festiu Especial",
+      "fnolocal": "Festiu No Local",
+      "acuenta": "A compte conveni (4.04%)",
+      "note": "* Nota: Les hores ordinàries de la quadrícula ({hours} h) no sumen import extra aquí al estar incloses en el salari base.",
+      "btn_claim": "Generar Reclamació",
+      "btn_info": "Generar Informació",
+      "btn_calc": "Calcular Nòmina",
+      "info_title": "Informació de Variables",
+      "claim_title": "Dades de la Reclamació",
+      "claim_owed": "Reclamar nòmines anteriors?",
+      "owed_desc": "nòmines anteriors:",
+      "abonado_desc": "Indica el que JA t'han pagat a la nòmina (deixa a 0 si no t'han pagat res d'aquest concepte):",
+      "h_comp_ad": "H. Comp. Deutes",
+      "prolong_ad": "Prolongació Deute (min)",
+      "night_ad": "H. Nocturnes Deutes",
+      "sunday_ad": "H. Diumenges Deutes",
+      "flocal_ad": "H. F. Locals Deutes",
+      "fespecial_ad": "H. F. Especials Deutes",
+      "fnolocal_ad": "H. F. No Locals Deutes",
+      "diets_ad": "Dietes Deutes",
+      "h_comp_ab": "H. Comp. Abonades",
+      "prolong_ab": "Prolongació Abonada (min)",
+      "night_ab": "H. Nocturnes Abonades",
+      "sunday_ab": "H. Diumenges Abonades",
+      "flocal_ab": "H. F. Locals Abonades",
+      "fespecial_ab": "H. F. Especials Abonades",
+      "fnolocal_ab": "H. F. No Locals Abonades",
+      "diets_ab": "Dietes Abonades",
+      "btn_gen_text": "Generar Text",
+      "btn_copy": "Copiar al Porta-retalls",
+      "btn_close": "Tancar",
+      "toast_copy": "Text copiat al porta-retalls",
+      "tooltip_claim": "Generar Reclamació et serveix per generar un text amb el càlcul del que et deuen per presentar una reclamació.",
+      "tooltip_info": "Generar Informació et serveix per generar un text amb els dies que has treballat i quines variables has generat en el període seleccionat."
+    },
+    "step5": {
+      "title": "5. Nòmina",
+      "dev_warning": "⚠️ Secció en desenvolupament: Aquesta funcionalitat està en fase de proves i podria contenir errors. Falten per afegir conceptes com Incapacitat Temporal (IT) i permisos no retribuïts.",
+      "adv_options": "Opcions avançades per calcular la nòmina completa.",
+      "irpf": "IRPF (%)",
+      "irpf_placeholder": "Ex. 12",
+      "prorrata": "Pagues extres prorratejades",
+      "btn_calc": "Calcular",
+      "btn_adjust": "Ajustar paràmetres",
+      "liquido": "Líquid a Percebre",
+      "devengos": "Meritacions",
+      "base": "Salari Base",
+      "formacion": "Comp. Formació",
+      "antiguedad": "Antiguitat",
+      "asistencia": "Plus Assistència i Punt.",
+      "pp_verano": "PP Estiu (Prorratejada)",
+      "pp_invierno": "PP Hivern (Prorratejada)",
+      "total_dev": "TOTAL MERITAT",
+      "retenciones": "Retencions",
+      "cc": "C. Comunes (4.7%)",
+      "mei": "MEI (0.15%)",
+      "fp": "Formació Prof. (0.10%)",
+      "desempleo": "Desocupació (1.55%)",
+      "total_ded": "TOTAL DEDUCCIONS",
+      "bases": "Bases de Cotització",
+      "base_prorrata": "Prorrata Pagues Extres",
+      "base_irpf": "Base IRPF",
+      "base_cc": "Base CC (Contingències Comunes)",
+      "base_at": "Base AT i Desocupació"
+    }
+  },
+  "ced": {
+    "header": {
+      "title": "Calculadora CED",
+      "subtitle_1": "Complement Especial de Dedicació",
+      "subtitle_2": "Paga de Vacances"
+    },
+    "instructions": {
+        "title": "Instruccions",
+        "text": "Introdueix en euros (€) l'import cobrat de cada variable en els 12 mesos de l'any anterior (des de gener fins a desembre). Les variables que no hagis cobrat almenys durant 6 mesos seran descartades (els festius es computen de forma conjunta)."
+    },
+    "btn_calc": "Calcular CED",
+    "results": {
+        "title": "Resultats CED",
+        "btn_pdf": "Generar PDF"
+    },
+    "concepts": {
+      "comp": "H. Complementàries",
+      "night": "Nocturnitat",
+      "sunday": "Diumenges",
+      "festivos": "Festius",
+      "flocal": "Festius Locals",
+      "fespecial": "Festius Especials",
+      "fnolocal": "Festius No Locals",
+      "prolong": "Prolongació",
+      "dietas": "Dietes"
+    },
+    "pdf": {
+      "title_data": "Dades Introduïdes Mensualment",
+      "col_month": "Mes",
+      "col_vars": "Variables Cobrades",
+      "no_data": "No s'han introduït dades majors a 0 en cap mes.",
+      "title_results": "Resultat del Càlcul CED",
+      "col_concept": "Concepte",
+      "col_appearance": "Aparició",
+      "col_avg": "Mitjana Calculada",
+      "col_status": "Estat",
+      "status_rejected": "Descartat",
+      "status_ok": "Computa",
+      "sum_avg": "Suma de les mitjanes computades",
+      "min_guaranteed": "Mínim garantit per conveni",
+      "total_pay": "TOTAL A ABONAR EN NÒMINA (CED)"
+    },
+    "logic": {
+      "cobrado": "(Cobrat {months} mesos)",
+      "solo": "(Només {months} mesos, min 6)",
+      "note_min": "La suma de les mitjanes ({amount} €) és inferior al mínim estipulat. S'abona l'import mínim.",
+      "note_ok": "La suma de les mitjanes supera el mínim estipulat. S'abona la quantitat sumada."
+    }
+  },
+  "generators": {
+    "claim": {
+      "intro": "Hola, no he cobrat de forma correcta les variables de la nòmina de {month}.\n\n",
+      "ord": "He treballat de jornada els següents dies: {days}.\n",
+      "comp": "I els següents dies de jornada complementària: {days}.\n",
+      "gen_some": "Generant: {items}.\n\n",
+      "gen_none": "Generant: cap concepte.\n\n",
+      "owed": "Se'm deu de nòmines anteriors: {items}.\n\n",
+      "sum": "Sumant un total de: {items}.\n\n",
+      "abn_some": "I només se m'han abonat: {items}.\n\n",
+      "abn_none": "I no se m'ha abonat cap concepte variable.\n\n",
+      "rec_some": "Per tant, RECLAMO: {items}.",
+      "rec_none": "Per tant, no reclamo cap concepte variable."
+    },
+    "info": {
+      "intro": "Hola, informo de les guàrdies i variables generades aquest mes de {month}.\n\n",
+      "ord": "He treballat de jornada els següents dies: {days}.\n",
+      "comp": "I els següents dies de jornada complementària: {days}.\n",
+      "gen": "Generant: {items}."
+    },
+    "items": {
+      "comp": "{amount} hores complementàries",
+      "night": "{amount} h nocturnitat",
+      "sunday": "{amount} hores de diumenges",
+      "flocal": "{amount} hores de festius locals",
+      "fespecial": "{amount} hores de festius especials",
+      "fnolocal": "{amount} hores de festius no locals",
+      "prolong": "{amount} minuts de prolongació",
+      "dietas": "{amount} dietes"
+    }
+  }
+}

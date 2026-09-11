@@ -1,4 +1,4 @@
-const data = {
+export const data = {
     minimo_ced: 215.01,
     conceptos_comunes: { 
         plus_asistencia_puntualidad: 126.40,
@@ -36,11 +36,11 @@ const data = {
     }
 };
 
-function getCategoryData(categoryKey) {
+export function getCategoryData(categoryKey) {
     return data.categorias[categoryKey] || null;
 }
 
-function getPriceHour(categoryKey, trienio) {
+export function getPriceHour(categoryKey, trienio) {
     const cat = getCategoryData(categoryKey);
     return cat ? cat.precio_hora[trienio] || 0 : 0;
 }

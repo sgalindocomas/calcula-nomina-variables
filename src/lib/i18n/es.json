@@ -1,0 +1,260 @@
+{
+  "common": {
+    "title": "Agrupació Ambulàncies",
+    "subtitle": "CCOO - Federació de Serveis a la Ciutadania",
+    "created_by": "Creado por Salva Galindo",
+    "back_home": "Volver al inicio",
+    "affiliation": {
+      "title": "¡Hazte fuerte, afíliate a CCOO!",
+      "text": "Juntos y juntas somos más fuertes. Únete al sindicato para defender tus derechos y conseguir mejoras laborales en nuestro sector.",
+      "btn": "Afíliate Ahora"
+    },
+    "months": {
+      "1": "Enero", "2": "Febrero", "3": "Marzo", "4": "Abril", "5": "Mayo", "6": "Junio",
+      "7": "Julio", "8": "Agosto", "9": "Septiembre", "10": "Octubre", "11": "Noviembre", "12": "Diciembre"
+    },
+    "months_short": {
+      "1": "Ene", "2": "Feb", "3": "Mar", "4": "Abr", "5": "May", "6": "Jun",
+      "7": "Jul", "8": "Ago", "9": "Sep", "10": "Oct", "11": "Nov", "12": "Dic"
+    },
+    "days": ["L", "M", "X", "J", "V", "S", "D"]
+  },
+  "home": {
+    "title": "Portal de Herramientas",
+    "subtitle": "Selecciona la herramienta que necesitas utilizar",
+    "calc_title": "Calculadora de Variables",
+    "calc_desc": "Calcula tus variables de nómina de forma rápida y sencilla.",
+    "ced_title": "Calculadora CED",
+    "ced_desc": "Complemento Especial de Dedicación (Paga de Vacaciones).",
+    "future_title": "Próximamente",
+    "future_desc": "Nuevas herramientas en desarrollo para facilitarte el día a día."
+  },
+  "calc": {
+    "header": {
+      "title": "Cálculo de Variables",
+      "subtitle": "Calculadora de nómina"
+    },
+    "steps": {
+      "1": "Datos",
+      "2": "Periodo",
+      "3": "Turnos",
+      "4": "Variables",
+      "5": "Nómina"
+    },
+    "categories": {
+      "tes_conductor": "TES Conductor",
+      "tes_ayudante": "TES Ayudante",
+      "tes_portalliteras": "TES Portalliteras"
+    },
+    "nav": {
+      "back": "Atrás",
+      "next": "Siguiente",
+      "finish": "Finalizar"
+    },
+    "step1": {
+      "title": "1. Datos del Empleado",
+      "desc": "Selecciona tu categoría y antigüedad para aplicar los precios correctos del convenio.",
+      "cat_label": "Categoría Profesional",
+      "cat_placeholder": "Selecciona una categoría...",
+      "sen_label": "Antigüedad (Trienios)",
+      "sen_placeholder": "Selecciona trienios...",
+      "alert_missing": "Por favor, selecciona una categoría y antigüedad."
+    },
+    "step2": {
+      "title": "2. Período de Liquidación",
+      "desc": "El ciclo de cálculo abarca desde el día 16 del mes anterior al día 15 del mes seleccionado.",
+      "month_label": "Mes de la nómina",
+      "info": "El ciclo abarcará del <br> <span>{start}</span> al <span>{end}</span>",
+      "alert_missing": "Por favor, selecciona un mes."
+    },
+    "step3": {
+      "title": "3. Calendario de Turnos",
+      "desc": "Rellena los datos y activa el \"Modo Pintar\" para asignar turnos múltiples tocando los días. Desactívalo para editar las dietas o prolongaciones de un día concreto.",
+      "unit_label": "Unidad (Obligatorio)",
+      "unit_placeholder": "Unidad (Obligatorio)",
+      "time_label": "Entrada",
+      "duration_label": "Horas",
+      "paint_mode": "Modo Pintar (Tocar para asignar)",
+      "alert_unit": "Debes introducir el nombre de la Unidad antes de pintar el turno.",
+      "legend_ord": "Jornada",
+      "legend_comp": "Complementaria",
+      "legend_flocal": "Festivo Local",
+      "legend_fespec": "Festivo Especial",
+      "legend_fnolocal": "Festivo No Local",
+      "btn_clear": "Limpiar Calendario"
+    },
+    "modal": {
+      "is_local_holiday": "Es Festivo Local",
+      "shift_type": "Tipo de Jornada",
+      "shift_none": "Descanso / Sin Turno",
+      "shift_ord": "Jornada Ordinaria",
+      "shift_comp": "Jornada Complementaria (Extra)",
+      "unit": "Unidad",
+      "unit_placeholder": "Obligatorio para guardar turno",
+      "time": "Entrada",
+      "duration": "Horas",
+      "prolongation": "Prolongación (Minutos Extra)",
+      "diets": "Dietas",
+      "diet_0": "0 Dietas",
+      "diet_1": "1 Dieta",
+      "diet_2": "2 Dietas",
+      "alert_unit": "El campo Unidad es obligatorio para guardar un turno.",
+      "btn_cancel": "Cancelar",
+      "btn_save": "Guardar"
+    },
+    "step4": {
+      "title": "4. Variables",
+      "breakdown": "Desglose de Conceptos",
+      "comp_hours": "Horas Complementarias",
+      "prolongation": "Prolongación",
+      "night_hours": "Nocturnidad",
+      "sunday_hours": "Domingos",
+      "diets": "Dietas",
+      "flocal": "Festivo Local",
+      "fespecial": "Festivo Especial",
+      "fnolocal": "Festivo No Local",
+      "acuenta": "A cuenta convenio (4.04%)",
+      "note": "* Nota: Las horas ordinarias de la cuadrícula ({hours} h) no suman importe extra aquí al estar incluidas en el salario base.",
+      "btn_claim": "Generar Reclamación",
+      "btn_info": "Generar Información",
+      "btn_calc": "Calcular Nómina",
+      "info_title": "Información de Variables",
+      "claim_title": "Datos de la Reclamación",
+      "claim_owed": "¿Reclamar nóminas anteriores?",
+      "owed_desc": "nóminas anteriores:",
+      "abonado_desc": "Indica lo que YA te han pagado en la nómina (deja a 0 si no te han pagado nada de ese concepto):",
+      "h_comp_ad": "H. Comp. Adeudadas",
+      "prolong_ad": "Prolongación Adeudada (min)",
+      "night_ad": "H. Nocturnas Adeudadas",
+      "sunday_ad": "H. Domingos Adeudadas",
+      "flocal_ad": "H. F. Locales Adeudadas",
+      "fespecial_ad": "H. F. Especiales Adeudadas",
+      "fnolocal_ad": "H. F. No Locales Adeudadas",
+      "diets_ad": "Dietas Adeudadas",
+      "h_comp_ab": "H. Comp. Abonadas",
+      "prolong_ab": "Prolongación Abonada (min)",
+      "night_ab": "H. Nocturnas Abonadas",
+      "sunday_ab": "H. Domingos Abonadas",
+      "flocal_ab": "H. F. Locales Abonadas",
+      "fespecial_ab": "H. F. Especiales Abonadas",
+      "fnolocal_ab": "H. F. No Locales Abonadas",
+      "diets_ab": "Dietas Abonadas",
+      "btn_gen_text": "Generar Texto",
+      "btn_copy": "Copiar al Portapapeles",
+      "btn_close": "Cerrar",
+      "toast_copy": "Texto copiado al portapapeles",
+      "tooltip_claim": "Generar Reclamación te sirve para generar un texto con el cálculo de lo que te adeudan para presentar una reclamación.",
+      "tooltip_info": "Generar Información te sirve para generar un texto con los días que has trabajado y qué variables has generado en el periodo seleccionado."
+    },
+    "step5": {
+      "title": "5. Nómina",
+      "dev_warning": "⚠️ Sección en desarrollo: Esta funcionalidad está en fase de pruebas y podría contener errores. Faltan por añadir conceptos como Incapacidad Temporal (IT) y permisos no retribuidos.",
+      "adv_options": "Opciones avanzadas para calcular la nómina completa.",
+      "irpf": "IRPF (%)",
+      "irpf_placeholder": "Ej. 12",
+      "prorrata": "Pagas extras prorrateadas",
+      "btn_calc": "Calcular",
+      "btn_adjust": "Ajustar parámetros",
+      "liquido": "Líquido a Percibir",
+      "devengos": "Devengos",
+      "base": "Salario Base",
+      "formacion": "Comp. Formación",
+      "antiguedad": "Antigüedad",
+      "asistencia": "Plus Asistencia y Punt.",
+      "pp_verano": "PP Verano (Prorrateada)",
+      "pp_invierno": "PP Invierno (Prorrateada)",
+      "total_dev": "TOTAL DEVENGADO",
+      "retenciones": "Retenciones",
+      "cc": "C. Comunes (4.7%)",
+      "mei": "MEI (0.15%)",
+      "fp": "Formación Prof. (0.10%)",
+      "desempleo": "Desempleo (1.55%)",
+      "total_ded": "TOTAL DEDUCCIONES",
+      "bases": "Bases de Cotización",
+      "base_prorrata": "Prorrata Pagas Extras",
+      "base_irpf": "Base IRPF",
+      "base_cc": "Base CC (Contingencias Comunes)",
+      "base_at": "Base AT y Desempleo"
+    }
+  },
+  "ced": {
+    "header": {
+      "title": "Calculadora CED",
+      "subtitle_1": "Complemento Especial de Dedicación",
+      "subtitle_2": "Paga de Vacaciones"
+    },
+    "instructions": {
+        "title": "Instrucciones",
+        "text": "Introduce en euros (€) el importe cobrado de cada variable en los 12 meses del año anterior (desde enero hasta diciembre). Las variables que no hayas cobrado al menos durante 6 meses serán descartadas (los festivos se computan de forma conjunta)."
+    },
+    "btn_calc": "Calcular CED",
+    "results": {
+        "title": "Resultados CED",
+        "btn_pdf": "Generar PDF"
+    },
+    "concepts": {
+      "comp": "H. Complementarias",
+      "night": "Nocturnidad",
+      "sunday": "Domingos",
+      "festivos": "Festivos",
+      "flocal": "Festivos Locales",
+      "fespecial": "Festivos Especiales",
+      "fnolocal": "Festivos No Locales",
+      "prolong": "Prolongación",
+      "dietas": "Dietas"
+    },
+    "pdf": {
+      "title_data": "Datos Introducidos Mensualmente",
+      "col_month": "Mes",
+      "col_vars": "Variables Cobradas",
+      "no_data": "No se han introducido datos mayores a 0 en ningún mes.",
+      "title_results": "Resultado del Cálculo CED",
+      "col_concept": "Concepto",
+      "col_appearance": "Aparición",
+      "col_avg": "Media Calculada",
+      "col_status": "Estado",
+      "status_rejected": "Descartado",
+      "status_ok": "Computa",
+      "sum_avg": "Suma de las medias computadas",
+      "min_guaranteed": "Mínimo garantizado por convenio",
+      "total_pay": "TOTAL A ABONAR EN NÓMINA (CED)"
+    },
+    "logic": {
+      "cobrado": "(Cobrado {months} meses)",
+      "solo": "(Solo {months} meses, min 6)",
+      "note_min": "La suma de las medias ({amount} €) es inferior al mínimo estipulado. Se abona el importe mínimo.",
+      "note_ok": "La suma de las medias supera el mínimo estipulado. Se abona la cantidad sumada."
+    }
+  },
+  "generators": {
+    "claim": {
+      "intro": "Hola, no he cobrado de forma correcta las variables de la nómina de {month}.\n\n",
+      "ord": "He trabajado de jornada los siguientes días: {days}.\n",
+      "comp": "Y los siguientes días de jornada complementaria: {days}.\n",
+      "gen_some": "Generando: {items}.\n\n",
+      "gen_none": "Generando: ningún concepto.\n\n",
+      "owed": "Se me debe de nominas anteriores: {items}.\n\n",
+      "sum": "Sumando un total de: {items}.\n\n",
+      "abn_some": "Y solo se me han abonado: {items}.\n\n",
+      "abn_none": "Y no se me ha abonado ningún concepto variable.\n\n",
+      "rec_some": "Por lo tanto, RECLAMO: {items}.",
+      "rec_none": "Por lo tanto, no reclamo ningún concepto variable."
+    },
+    "info": {
+      "intro": "Hola, informo de las guardias y variables generadas este mes de {month}.\n\n",
+      "ord": "He trabajado de jornada los siguientes días: {days}.\n",
+      "comp": "Y los siguientes días de jornada complementaria: {days}.\n",
+      "gen": "Generando: {items}."
+    },
+    "items": {
+      "comp": "{amount} horas complementarias",
+      "night": "{amount} h nocturnidad",
+      "sunday": "{amount} horas de domingos",
+      "flocal": "{amount} horas de festivos locales",
+      "fespecial": "{amount} horas de festivos especiales",
+      "fnolocal": "{amount} horas de festivos no locales",
+      "prolong": "{amount} minutos de prolongación",
+      "dietas": "{amount} dietas"
+    }
+  }
+}
