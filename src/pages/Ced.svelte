@@ -82,18 +82,30 @@
         });
         
         const minimoCed = data?.minimo_ced ?? 215.01;
-        let finalAmount = sumOfAverages;
+        const isMinimum = sumOfAverages < minimoCed;
+        const baseAmount = isMinimum ? minimoCed : sumOfAverages;
+        const aCuentaConvenio = baseAmount * 0.0404;
+        const finalAmount = baseAmount + aCuentaConvenio;
         let noteText = '';
         
-        if (sumOfAverages < minimoCed) {
-            finalAmount = minimoCed;
-            noteText = t('ced.logic.note_min', { amount: sumOfAverages.toFixed(2) });
+        if (isMinimum) {
+            noteText = t('ced.logic.note_min', { 
+                amount: sumOfAverages.toFixed(2),
+                min: minimoCed.toFixed(2)
+            });
         } else {
-            noteText = t('ced.logic.note_ok');
+            noteText = t('ced.logic.note_ok', { 
+                amount: sumOfAverages.toFixed(2),
+                min: minimoCed.toFixed(2)
+            });
         }
         
         results = {
             details,
+            sumOfAverages,
+            baseAmount,
+            isMinimum,
+            aCuentaConvenio,
             finalAmount,
             noteText
         };
@@ -215,29 +227,38 @@
             }
         });
         
-        const finalY = doc.lastAutoTable.finalY + 15;
+        const finalY = doc.lastAutoTable.finalY + 12;
         
-        let sumAverages = 0;
-        results.details.forEach(d => { if (!d.rejected) sumAverages += d.amount; });
-        
-        doc.setFontSize(11);
-        doc.setTextColor(0);
+        doc.setFontSize(10);
+        doc.setTextColor(60);
         doc.setFont("helvetica", "normal");
-        doc.text(t('ced.pdf.sum_avg') + ": " + sumAverages.toFixed(2) + " €", margin, finalY);
-        doc.text(t('ced.pdf.min_guaranteed') + ": " + (data.minimo_ced || 215.01) + " €", margin, finalY + 7);
+        doc.text(t('ced.pdf.sum_avg') + ": " + results.sumOfAverages.toFixed(2) + " €", margin, finalY);
+        doc.text(t('ced.pdf.min_guaranteed') + ": " + (data.minimo_ced || 215.01).toFixed(2) + " €", margin, finalY + 6);
+        
+        doc.setFont("helvetica", "bold");
+        doc.setTextColor(0);
+        doc.text(t('ced.pdf.base_applied') + ": " + results.baseAmount.toFixed(2) + " €", margin, finalY + 13);
+        
+        doc.setTextColor(186, 12, 47);
+        doc.text(t('ced.pdf.acuenta') + ": +" + results.aCuentaConvenio.toFixed(2) + " €", margin, finalY + 20);
+        
+        doc.setDrawColor(186, 12, 47);
+        doc.setLineWidth(0.5);
+        doc.line(margin, finalY + 24, pageW - margin, finalY + 24);
         
         doc.setFontSize(12);
+        doc.setTextColor(0);
         doc.setFont("helvetica", "bold");
-        doc.text(t('ced.pdf.total_pay') + ":", margin, finalY + 17);
+        doc.text(t('ced.pdf.total_pay') + ":", margin, finalY + 32);
         
         doc.setFontSize(16);
         doc.setTextColor(186, 12, 47);
-        doc.text(results.finalAmount.toFixed(2) + " €", margin + 85, finalY + 17);
+        doc.text(results.finalAmount.toFixed(2) + " €", margin + 85, finalY + 32);
         
-        doc.setFontSize(10);
+        doc.setFontSize(9);
         doc.setTextColor(100);
         doc.setFont("helvetica", "italic");
-        doc.text(results.noteText, margin, finalY + 27);
+        doc.text(results.noteText, margin, finalY + 40, { maxWidth: pageW - (margin * 2) });
         
         doc.save("Calculo_CED.pdf");
         } catch(err) { alert("Error en PDF: " + err.message + "\n" + err.stack); }
@@ -302,7 +323,34 @@
                         </div>
                     {/each}
                 </div>
-                <div class="result-total-ced">
+
+                <div class="ced-breakdown mt-15 pt-1" style="border-top: 2px solid var(--color-primary-light);">
+                    {#if results.isMinimum}
+                        <div class="result-row" style="opacity: 0.75; font-size: 0.9rem;">
+                            <span>{t('ced.results.sum_avg')}</span>
+                            <span>{results.sumOfAverages.toFixed(2)} €</span>
+                        </div>
+                        <div class="result-row">
+                            <span><strong>{t('ced.results.base_applied_min')}</strong></span>
+                            <strong>{results.baseAmount.toFixed(2)} €</strong>
+                        </div>
+                    {:else}
+                        <div class="result-row">
+                            <span><strong>{t('ced.results.base_applied_avg')}</strong></span>
+                            <strong>{results.baseAmount.toFixed(2)} €</strong>
+                        </div>
+                    {/if}
+
+                    <div class="result-row" style="color: var(--color-primary); font-weight: 600;">
+                        <span>{t('ced.results.acuenta')}</span>
+                        <strong>+ {results.aCuentaConvenio.toFixed(2)} €</strong>
+                    </div>
+                </div>
+
+                <div class="result-total-ced" style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--color-border);">
+                    <div style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--color-text-muted); margin-bottom: 0.35rem;">
+                        {t('ced.results.total_label')}
+                    </div>
                     {results.finalAmount.toFixed(2)} €
                 </div>
                 <div class="result-note">

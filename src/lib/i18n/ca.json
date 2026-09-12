@@ -190,7 +190,12 @@
     "btn_calc": "Calcular CED",
     "results": {
         "title": "Resultats CED",
-        "btn_pdf": "Generar PDF"
+        "btn_pdf": "Generar PDF",
+        "sum_avg": "Mitjana variables computables",
+        "base_applied_min": "Base aplicable (Mínim garantit)",
+        "base_applied_avg": "Base aplicable (Mitjana computada)",
+        "acuenta": "A compte conveni (+4,04%)",
+        "total_label": "TOTAL CED A ABONAR"
     },
     "concepts": {
       "comp": "H. Complementàries",
@@ -217,13 +222,15 @@
       "status_ok": "Computa",
       "sum_avg": "Suma de les mitjanes computades",
       "min_guaranteed": "Mínim garantit per conveni",
+      "base_applied": "Base aplicable",
+      "acuenta": "A compte conveni (+4,04%)",
       "total_pay": "TOTAL A ABONAR EN NÒMINA (CED)"
     },
     "logic": {
       "cobrado": "(Cobrat {months} mesos)",
       "solo": "(Només {months} mesos, min 6)",
-      "note_min": "La suma de les mitjanes ({amount} €) és inferior al mínim estipulat. S'abona l'import mínim.",
-      "note_ok": "La suma de les mitjanes supera el mínim estipulat. S'abona la quantitat sumada."
+      "note_min": "La suma de les mitjanes ({amount} €) no arriba al mínim garantit per conveni ({min} €). S'aplica l'import base mínim més el 4,04% a compte de conveni.",
+      "note_ok": "La suma de les mitjanes ({amount} €) supera el mínim garantit per conveni ({min} €). S'aplica la mitjana obtinguda més el 4,04% a compte de conveni."
     }
   },
   "generators": {

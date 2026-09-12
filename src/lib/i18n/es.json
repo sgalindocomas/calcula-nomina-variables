@@ -190,7 +190,12 @@
     "btn_calc": "Calcular CED",
     "results": {
         "title": "Resultados CED",
-        "btn_pdf": "Generar PDF"
+        "btn_pdf": "Generar PDF",
+        "sum_avg": "Media variables computables",
+        "base_applied_min": "Base aplicable (Mínimo garantizado)",
+        "base_applied_avg": "Base aplicable (Promedio computado)",
+        "acuenta": "A cuenta convenio (+4,04%)",
+        "total_label": "TOTAL CED A ABONAR"
     },
     "concepts": {
       "comp": "H. Complementarias",
@@ -217,13 +222,15 @@
       "status_ok": "Computa",
       "sum_avg": "Suma de las medias computadas",
       "min_guaranteed": "Mínimo garantizado por convenio",
+      "base_applied": "Base aplicable",
+      "acuenta": "A cuenta convenio (+4,04%)",
       "total_pay": "TOTAL A ABONAR EN NÓMINA (CED)"
     },
     "logic": {
       "cobrado": "(Cobrado {months} meses)",
       "solo": "(Solo {months} meses, min 6)",
-      "note_min": "La suma de las medias ({amount} €) es inferior al mínimo estipulado. Se abona el importe mínimo.",
-      "note_ok": "La suma de las medias supera el mínimo estipulado. Se abona la cantidad sumada."
+      "note_min": "La suma de las medias ({amount} €) no alcanza el mínimo garantizado por convenio ({min} €). Se aplica el importe base mínimo más el 4,04% a cuenta de convenio.",
+      "note_ok": "La suma de las medias ({amount} €) supera el mínimo garantizado por convenio ({min} €). Se aplica el promedio obtenido más el 4,04% a cuenta de convenio."
     }
   },
   "generators": {
