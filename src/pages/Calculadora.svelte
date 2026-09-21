@@ -106,6 +106,13 @@
         {/if}
     </footer>
 
+    <!-- Navigation -->
+    <div class="text-center mt-2 mb-2">
+        <a href="./index.html" class="btn btn-secondary" style="text-decoration: none;">
+            ← {t('common.back_home')}
+        </a>
+    </div>
+
     <!-- Affiliation Banner -->
     <div class="affiliation-banner">
         <h3>{t('common.affiliation.title')}</h3>

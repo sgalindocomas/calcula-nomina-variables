@@ -1,7 +1,7 @@
 {
   "common": {
     "title": "Agrupació Ambulàncies",
-    "subtitle": "CCOO - Federació de Serveis a la Ciutadania",
+    "subtitle": "Agrupació Ambulàncies",
     "created_by": "Creado por Salva Galindo",
     "back_home": "Volver al inicio",
     "affiliation": {
@@ -26,8 +26,18 @@
     "calc_desc": "Calcula tus variables de nómina de forma rápida y sencilla.",
     "ced_title": "Calculadora CED",
     "ced_desc": "Complemento Especial de Dedicación (Paga de Vacaciones).",
+    "docs_title": "Documentos",
+    "docs_desc": "Consulta el convenio colectivo y las tablas salariales.",
     "future_title": "Próximamente",
     "future_desc": "Nuevas herramientas en desarrollo para facilitarte el día a día."
+  },
+  "docs": {
+    "title": "Documentos",
+    "subtitle": "Información laboral y salarial",
+    "convenio_title": "Convenio Colectivo",
+    "convenio_desc": "V Convenio del transporte de enfermos y accidentados en ambulancia de Cataluña.",
+    "tablas_title": "Tablas Salariales",
+    "tablas_desc": "Tablas salariales actualizadas al año 2024."
   },
   "calc": {
     "header": {

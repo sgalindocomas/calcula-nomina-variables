@@ -1,8 +1,6 @@
 <script>
     import { t } from '../lib/i18n/index.svelte.js';
     import LanguageSelector from '../components/LanguageSelector.svelte';
-    import CustomAlert from '../components/CustomAlert.svelte';
-    import { customAlert } from '../lib/alert.svelte.js';
 </script>
 
 <div class="app-container shadow-glass max-w-800">
@@ -15,39 +13,34 @@
         <div style="display: flex; justify-content: center; margin-bottom: 1.5rem;">
             <LanguageSelector />
         </div>
-        <h1 class="text-4xl mt-0">{t('home.title')}</h1>
-        <p class="text-xl mt-05">{t('home.subtitle')}</p>
+        <h1 class="text-4xl mt-0">{t('docs.title')}</h1>
+        <p class="text-xl mt-05">{t('docs.subtitle')}</p>
     </header>
 
-    <!-- Tools Grid -->
+    <!-- Documents Grid -->
     <main class="tools-grid">
-        <a href="./calculadora.html" class="tool-card">
-            <div class="tool-icon">💶</div>
-            <h3>{t('home.calc_title')}</h3>
-            <p>{t('home.calc_desc')}</p>
+        <a href="./docs/Cinque_Conveni_TS.pdf" target="_blank" class="tool-card">
+            <div class="tool-icon">📖</div>
+            <h3>{t('docs.convenio_title')}</h3>
+            <p>{t('docs.convenio_desc')}</p>
         </a>
 
-        <a href="./ced.html" class="tool-card">
-            <div class="tool-icon">🏖️</div>
-            <h3>{t('home.ced_title')}</h3>
-            <p>{t('home.ced_desc')}</p>
+        <a href="./docs/Taules_Salarials_2024.pdf" target="_blank" class="tool-card">
+            <div class="tool-icon">📊</div>
+            <h3>{t('docs.tablas_title')}</h3>
+            <p>{t('docs.tablas_desc')}</p>
         </a>
-
-        <a href="./documentos.html" class="tool-card">
-            <div class="tool-icon">📄</div>
-            <h3>{t('home.docs_title')}</h3>
-            <p>{t('home.docs_desc')}</p>
-        </a>
-        
-        <div class="tool-card future-tool">
-            <div class="tool-icon">🛠️</div>
-            <h3>{t('home.future_title')}</h3>
-            <p>{t('home.future_desc')}</p>
-        </div>
     </main>
 
+    <!-- Navigation -->
+    <div class="text-center mt-2 mb-2">
+        <a href="./index.html" class="btn btn-secondary" style="text-decoration: none;">
+            ← {t('common.back_home')}
+        </a>
+    </div>
+
     <!-- Affiliation Banner -->
-    <footer class="affiliation-banner">
+    <footer class="affiliation-banner" style="margin-top: 2rem;">
         <h3>{t('common.affiliation.title')}</h3>
         <p>{t('common.affiliation.text')}</p>
         <a href="https://www.ccoo.cat/afiliat" target="_blank" class="btn-white">{t('common.affiliation.btn')}</a>
@@ -66,5 +59,3 @@
         {t('common.created_by')}
     </div>
 </footer>
-
-<CustomAlert />

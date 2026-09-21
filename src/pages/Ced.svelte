@@ -11,8 +11,7 @@
         { id: 'flocal', label: t('ced.concepts.flocal') },
         { id: 'fespecial', label: t('ced.concepts.fespecial') },
         { id: 'fnolocal', label: t('ced.concepts.fnolocal') },
-        { id: 'prolong', label: t('ced.concepts.prolong') },
-        { id: 'dietas', label: t('ced.concepts.dietas') }
+        { id: 'prolong', label: t('ced.concepts.prolong') }
     ]);
 
     let MONTHS = $derived([
@@ -22,7 +21,7 @@
 
     let inputs = $state(Array.from({ length: 12 }, () => {
         let monthData = {};
-        ['comp','night','sunday','flocal','fespecial','fnolocal','prolong','dietas'].forEach(id => { monthData[id] = 0; });
+        ['comp','night','sunday','flocal','fespecial','fnolocal','prolong'].forEach(id => { monthData[id] = 0; });
         return monthData;
     }));
 
@@ -41,8 +40,7 @@
             { label: t('ced.concepts.night'), ids: ['night'] },
             { label: t('ced.concepts.sunday'), ids: ['sunday'] },
             { label: t('ced.concepts.festivos'), ids: ['flocal', 'fespecial', 'fnolocal'] },
-            { label: t('ced.concepts.prolong'), ids: ['prolong'] },
-            { label: t('ced.concepts.dietas'), ids: ['dietas'] }
+            { label: t('ced.concepts.prolong'), ids: ['prolong'] }
         ];
         
         calcGroups.forEach(group => {
@@ -362,6 +360,13 @@
             </div>
         {/if}
     </main>
+
+    <!-- Navigation -->
+    <div class="text-center mt-2 mb-2">
+        <a href="./index.html" class="btn btn-secondary" style="text-decoration: none;">
+            ← {t('common.back_home')}
+        </a>
+    </div>
 
     <!-- Affiliation Banner -->
     <div class="affiliation-banner">

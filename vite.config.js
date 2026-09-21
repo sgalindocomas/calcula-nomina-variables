@@ -10,7 +10,8 @@ export default defineConfig({
       input: {
         main: 'index.html',
         calculadora: 'calculadora.html',
-        ced: 'ced.html'
+        ced: 'ced.html',
+        documentos: 'documentos.html'
       }
     }
   }
