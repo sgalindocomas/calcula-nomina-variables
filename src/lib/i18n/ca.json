@@ -9,6 +9,10 @@
       "text": "Junts i juntes som més forts. Uneix-te al sindicat per defensar els teus drets i aconseguir millores laborals al nostre sector.",
       "btn": "Afilia't Ara"
     },
+    "contact": {
+      "text": "Si necessites assessorament, ajuda o organitzar-te, el teu sindicat et respon.",
+      "btn": "Contacta"
+    },
     "months": {
       "1": "Gener", "2": "Febrer", "3": "Març", "4": "Abril", "5": "Maig", "6": "Juny",
       "7": "Juliol", "8": "Agost", "9": "Setembre", "10": "Octubre", "11": "Novembre", "12": "Desembre"

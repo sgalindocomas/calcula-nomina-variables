@@ -9,6 +9,10 @@
       "text": "Juntos y juntas somos más fuertes. Únete al sindicato para defender tus derechos y conseguir mejoras laborales en nuestro sector.",
       "btn": "Afíliate Ahora"
     },
+    "contact": {
+      "text": "Si necesitas asesoramiento, ayuda u organizarte, tu sindicato te responde.",
+      "btn": "Contacta"
+    },
     "months": {
       "1": "Enero", "2": "Febrero", "3": "Marzo", "4": "Abril", "5": "Mayo", "6": "Junio",
       "7": "Julio", "8": "Agosto", "9": "Septiembre", "10": "Octubre", "11": "Noviembre", "12": "Diciembre"

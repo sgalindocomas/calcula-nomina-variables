@@ -54,6 +54,12 @@
     </footer>
 </div>
 
+<!-- Contact Pre-footer -->
+<div class="contact-prefooter">
+    <p>{t('common.contact.text')}</p>
+    <a href="mailto:ambulancies@ccoo.cat" class="btn-contact-prefooter">{t('common.contact.btn')}</a>
+</div>
+
 <!-- Global Footer -->
 <footer class="global-footer">
     <div class="footer-content">
