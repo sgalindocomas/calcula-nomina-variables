@@ -26,9 +26,8 @@ export function initPWA() {
 
   // 2. Detección de iOS (Safari no emite beforeinstallprompt)
   const userAgent = window.navigator.userAgent.toLowerCase();
-  const isIOSDevice = /iphone|ipad|ipod/.test(userAgent) && !window.MSStream;
-  // Comprobar si es navegador WebKit/Safari
-  const isSafari = /safari/.test(userAgent) && !/chrome|crios|fxios|android/.test(userAgent);
+  const isIOSDevice = (/iphone|ipad|ipod/.test(userAgent) || 
+    (window.navigator.platform === 'MacIntel' && window.navigator.maxTouchPoints > 1)) && !window.MSStream;
 
   if (isIOSDevice && !isStandalone) {
     pwaState.isIOS = true;

@@ -49,10 +49,7 @@
                     </button>
                 {:else}
                     <button class="btn-primary pwa-btn" onclick={dismissPWA}>
-                        {t('pwa.ios_btn_ok')}
-                    </button>
-                    <button class="btn-secondary pwa-btn" onclick={dismissPWA}>
-                        {t('pwa.btn_continue_web')}
+                        👍 {t('pwa.ios_btn_ok')}
                     </button>
                 {/if}
             </div>
@@ -69,7 +66,7 @@
         aria-label={t('pwa.install_tooltip')}
     >
         <span class="fab-icon">📲</span>
-        <span class="fab-text">{t('pwa.btn_install')}</span>
+        <span class="fab-text">{pwaState.isIOS ? t('pwa.ios_fab_text') : t('pwa.btn_install')}</span>
     </button>
 {/if}
 

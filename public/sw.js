@@ -1,5 +1,5 @@
 // Service Worker per a Ambulàncies CCOO
-const CACHE_NAME = 'ambulancies-ccoo-v2';
+const CACHE_NAME = 'ambulancies-ccoo-v3';
 
 // Recursos críticos a precachear inicialmente
 const PRECACHE_ASSETS = [

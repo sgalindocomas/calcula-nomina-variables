@@ -1,4 +1,5 @@
 {
+  "id": "./index.html",
   "name": "Ambulàncies CCOO",
   "short_name": "Ambulàncies CCOO",
   "description": "Portal d'eines d'Ambulàncies CCOO per al càlcul de nòmines i conceptes laborals.",
@@ -9,6 +10,7 @@
   "background_color": "#f8f9fa",
   "theme_color": "#e63946",
   "lang": "es",
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "./icons/android/launchericon-48x48.png",

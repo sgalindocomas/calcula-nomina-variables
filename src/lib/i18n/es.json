@@ -284,9 +284,10 @@
     "install_desc": "¿Quieres instalar la app en tu dispositivo para acceder en un clic y consultar conceptos sin conexión?",
     "btn_install": "Instalar App",
     "btn_continue_web": "Usar como web",
-    "ios_title": "Instalar en iPhone / iPad",
-    "ios_desc": "Para instalar la aplicación en iOS, pulsa el botón Compartir de Safari y selecciona 'Añadir a la pantalla de inicio'.",
-    "ios_btn_ok": "Entendido",
+    "ios_title": "Cómo instalar en iPhone / iPad",
+    "ios_desc": "En iOS la instalación no se realiza mediante un botón directo. Sigue estos 2 sencillos pasos en Safari:",
+    "ios_btn_ok": "Entendido, añadir desde Safari",
+    "ios_fab_text": "Cómo instalar en iPhone",
     "install_tooltip": "Instalar como aplicación"
   }
 }
