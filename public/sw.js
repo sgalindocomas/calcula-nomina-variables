@@ -1,5 +1,5 @@
-// Service Worker para Portal de Herramientas CCOO
-const CACHE_NAME = 'ccoo-herramientas-v1';
+// Service Worker per a Ambulàncies CCOO
+const CACHE_NAME = 'ambulancies-ccoo-v2';
 
 // Recursos críticos a precachear inicialmente
 const PRECACHE_ASSETS = [

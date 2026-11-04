@@ -1,7 +1,7 @@
 {
-  "name": "Portal de Herramientas - CCOO",
-  "short_name": "CCOO Herramientas",
-  "description": "Portal de herramientas de CCOO para el cálculo de nóminas y conceptos laborales.",
+  "name": "Ambulàncies CCOO",
+  "short_name": "Ambulàncies CCOO",
+  "description": "Portal d'eines d'Ambulàncies CCOO per al càlcul de nòmines i conceptes laborals.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
