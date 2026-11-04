@@ -3,6 +3,7 @@
     import { jsPDF } from 'jspdf';
     import autoTable from 'jspdf-autotable';
     import { t } from '../lib/i18n/index.svelte.js';
+    import InstallPrompt from '../components/InstallPrompt.svelte';
 
     let VARIABLES = $derived([
         { id: 'comp', label: t('ced.concepts.comp') },
@@ -375,6 +376,8 @@
         <a href="https://www.ccoo.cat/afiliat" target="_blank" class="btn-white">{t('common.affiliation.btn')}</a>
     </div>
 </div>
+
+<InstallPrompt />
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->

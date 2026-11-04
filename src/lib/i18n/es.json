@@ -277,5 +277,16 @@
       "prolong": "{amount} minutos de prolongación",
       "dietas": "{amount} dietas"
     }
+  },
+  "pwa": {
+    "badge": "App disponible",
+    "install_title": "Instalar aplicación",
+    "install_desc": "¿Quieres instalar la app en tu dispositivo para acceder en un clic y consultar conceptos sin conexión?",
+    "btn_install": "Instalar App",
+    "btn_continue_web": "Usar como web",
+    "ios_title": "Instalar en iPhone / iPad",
+    "ios_desc": "Para instalar la aplicación en iOS, pulsa el botón Compartir de Safari y selecciona 'Añadir a la pantalla de inicio'.",
+    "ios_btn_ok": "Entendido",
+    "install_tooltip": "Instalar como aplicación"
   }
 }

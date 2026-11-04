@@ -9,6 +9,7 @@
     import StepNomina from '../components/Calculadora/StepNomina.svelte';
     import CustomAlert from '../components/CustomAlert.svelte';
     import GlobalToast from '../components/GlobalToast.svelte';
+    import InstallPrompt from '../components/InstallPrompt.svelte';
     import { t } from '../lib/i18n/index.svelte.js';
     import { customAlert } from '../lib/alert.svelte.js';
 
@@ -123,6 +124,7 @@
 
 <CustomAlert />
 <GlobalToast />
+<InstallPrompt />
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->

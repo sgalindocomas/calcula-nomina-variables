@@ -1,6 +1,7 @@
 <script>
     import { t } from '../lib/i18n/index.svelte.js';
     import LanguageSelector from '../components/LanguageSelector.svelte';
+    import InstallPrompt from '../components/InstallPrompt.svelte';
 </script>
 
 <div class="app-container shadow-glass max-w-800">
@@ -59,3 +60,5 @@
         {t('common.created_by')}
     </div>
 </footer>
+
+<InstallPrompt />

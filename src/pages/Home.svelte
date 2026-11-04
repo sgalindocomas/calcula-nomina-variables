@@ -2,6 +2,7 @@
     import { t } from '../lib/i18n/index.svelte.js';
     import LanguageSelector from '../components/LanguageSelector.svelte';
     import CustomAlert from '../components/CustomAlert.svelte';
+    import InstallPrompt from '../components/InstallPrompt.svelte';
     import { customAlert } from '../lib/alert.svelte.js';
 </script>
 
@@ -74,3 +75,4 @@
 </footer>
 
 <CustomAlert />
+<InstallPrompt />
