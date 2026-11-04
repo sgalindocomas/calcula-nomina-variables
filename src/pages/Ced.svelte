@@ -377,7 +377,11 @@
     </div>
 </div>
 
-<InstallPrompt />
+<!-- Contact Pre-footer -->
+<div class="contact-prefooter">
+    <p>{t('common.contact.text')}</p>
+    <a href="mailto:ambulancies@ccoo.cat" class="btn-contact-prefooter">{t('common.contact.btn')}</a>
+</div>
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
@@ -393,4 +397,6 @@
         Creado por Salva Galindo
     </div>
 </footer>
+
+<InstallPrompt />
 
